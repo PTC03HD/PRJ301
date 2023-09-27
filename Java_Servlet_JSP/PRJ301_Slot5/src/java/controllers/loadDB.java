@@ -165,27 +165,25 @@ public class loadDB extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        Object o1 =  request.getParameter("type");
-        if(o1 != null){
-            if((o1 + "").equals("0")){
+        Object o1 = request.getParameter("type");
+        if(o1!= null){  //tham số type đã được gửi trong yêu cầu HTTP
+            if((o1+"").equals("0")){
+                //update
                 Object o2 = request.getParameter("id");
                 if(o2 != null){
                     request.setAttribute("update", o2+"");
                 }else{
                     request.removeAttribute("update");
                 }
-                //update
-            }else if((o1 + "").equals("1")){
+            }else if((o1+"").equals("1")){
                 Object o3 = request.getParameter("id");
-                if(o3 != null){
+                if(o3!= null){
                     d.Delete(o3+"");
                 }
-                //delete
-            }
-            else {}
+            }else{}
         }
         d.loadDB();
-        request.setAttribute("dao", d); //chuyen selvet sang jsp
+        request.setAttribute("dao", d);
         request.getRequestDispatcher("Views/loadDB.jsp").forward(request, response);
 //        processRequest(request, response);
     } 
@@ -221,14 +219,14 @@ public class loadDB extends HttpServlet {
             }
         }
         
-        if(o1 != null && checkUpdate){
+        if(o1 != null && !checkUpdate){
             d.Update(id, name, gender, departId, age, gpa, add, dob);
         }
         if(o2 != null && !checkUpdate){
             d.Insert(id, name, gender, departId, age, gpa, add, dob);
         }
 //        d.Insert(id, name, gender, departId, age, gpa, add, dob);
-//        d.Update(id, name, gender, departId, age, gpa, add, dob);
+        d.Update(id, name, gender, departId, age, gpa, add, dob);
         doGet(request, response);
     }
 

@@ -40,7 +40,7 @@
         <hr/>
         
     <form action="loadDB" method='post'>
-        
+
         <table>
              <tr>
                 <td>Id</td>
@@ -66,7 +66,8 @@
                     Department val = en.getValue();%>
                     <option value='<%=key%>'
                             <%=stUpdate!=null && stUpdate.getDepartId().equals(key)?"selected":""%>
-                            ><%=val.getName()%> </option>
+                            ><%=val.getName()%>
+                    </option>
                           <%  }
                    %></select></td>
             </tr>
