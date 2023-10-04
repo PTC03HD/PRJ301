@@ -3,23 +3,26 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package Controllers;
+package controllers;
 
-import DAL.DAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import models.Students;
+import models.*;
+import DAL.*;
 
 /**
  *
  * @author phamt
  */
-public class loadDB extends HttpServlet {
-   
+public class myMenus extends HttpServlet {
+   DAO d;
+   public void init(){
+      d = new DAO() ;
+   }
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -27,10 +30,6 @@ public class loadDB extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    DAO d;
-    public void init(){
-        d = new DAO();
-    }
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -39,15 +38,40 @@ public class loadDB extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet loadDB</title>");  
+            out.println("<title>Servlet myMenus</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet loadDB at " + request.getContextPath () + "</h1>");
-            
+            out.println("<h1>Servlet myMenus at " + request.getContextPath () + "</h1>");
+            d.loadMenu();
+            out.println(makeMenu(0));
             out.println("</body>");
             out.println("</html>");
         }
     } 
+    
+    private String makeMenu(int pid){
+        //in ra tất cả các menu có pid = id
+        int count = 0; //tránh tạo thêm dòng rác
+        for(Menus m : d.getMenu()){
+            if(m.getPid()==pid) count++;
+        }
+        if(count==0) return "";
+        String s = "<ul>";
+        for(Menus m: d.getMenu()){
+            if(m.getPid()==pid){
+                s+="<li title='"+m.getTitle()+"'>";
+                if(m.getLink()!=null){
+                    s+="<a href='"+m.getLink()+"'>"+m.getName()+"</a>";
+                }else {
+                    s+=m.getName();
+                }
+                s+=makeMenu(m.getId());
+                s+="</li>";
+            }
+        }
+        s+="</ul>";
+        return s;
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
@@ -60,30 +84,7 @@ public class loadDB extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-//        processRequest(request, response);
-        Object o1 =  request.getParameter("type");
-        if(o1 != null){
-            if((o1 + "").equals("0")){
-                Object o2 = request.getParameter("id");
-                if(o2 != null){
-                    request.setAttribute("update", o2+"");
-                }else{
-                    request.removeAttribute("update");
-                }
-                //update
-            }else if((o1 + "").equals("1")){
-                Object o3 = request.getParameter("id");
-                if(o3 != null){
-                    d.Delete(o3+"");
-                }
-                //delete
-            }
-            else {}
-        }
-        d.loadDb();
-        request.setAttribute("dao", d); //chuyen selvet sang jsp
-        request.getRequestDispatcher("Views/loadDB.jsp").forward(request, response);
-        //chuyen huong sang loadDB.jsp
+        processRequest(request, response);
     } 
 
     /** 
@@ -96,35 +97,7 @@ public class loadDB extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-//        processRequest(request, response);
-        Object o1 = request.getParameter("btnUpdate");
-        Object o2 = request.getParameter("btnInsert");
-
-        String id = request.getParameter("Id");
-        String name = request.getParameter("Name");
-        Object obj = request.getParameter("Gender");
-        boolean gender = obj!=null && ((obj+"").equals("M"));
-        String departId = request.getParameter("departId");
-        int age = Integer.parseInt(request.getParameter("Age"));
-        float gpa = Float.parseFloat(request.getParameter("Gpa"));
-        String add = request.getParameter("Add");
-        String dob = request.getParameter("Dob");
-        
-        boolean checkUpdate = false;
-        for(Students st : d.getStd()){
-            if(st.getId().equals(id)) {
-                checkUpdate = true;
-                break;
-            }
-        }
-        
-        if(o1!=null&&checkUpdate){
-            d.Update(id, name, gender, departId, age, gpa, add, dob);
-        }
-        if(o2!=null&&!checkUpdate){
-            d.Insert(id, name, gender, departId, age, gpa, add, dob);
-        }
-        doGet(request, response);
+        processRequest(request, response);
     }
 
     /** 

@@ -8,7 +8,7 @@ package controllers;
 import DAL.DAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import jakarta.servlet.ServletException; 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -184,8 +184,7 @@ public class loadDB extends HttpServlet {
         }
         d.loadDB();
         request.setAttribute("dao", d);
-//        request.getRequestDispatcher("Views/loadDB.jsp").forward(request, response);
-        request.getRequestDispatcher("Views/loadDB01.jsp").forward(request, response);
+        request.getRequestDispatcher("Views/loadDB.jsp").forward(request, response);
 //        processRequest(request, response);
     } 
 
@@ -205,7 +204,8 @@ public class loadDB extends HttpServlet {
         String id = request.getParameter("id");
         String name = request.getParameter("name");
         Object obj = request.getParameter("gender");
-        boolean gender = obj!=null && ((obj+"").equals("M"));
+//        boolean gender = obj!=null&&((obj+"").equals("M"));
+        boolean gender = obj != null;
         String departId = request.getParameter("departId");
         int age = Integer.parseInt(request.getParameter("age"));
         float gpa = Float.parseFloat(request.getParameter("gpa"));

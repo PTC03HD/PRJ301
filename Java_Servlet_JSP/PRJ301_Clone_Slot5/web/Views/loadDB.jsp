@@ -51,15 +51,16 @@
                 <tr>
                     <td>Name</td>
                     <td><input type="text" name="Name" value=
-                               '<%=(stUpdate==null?"":stUpdate.getName())%>'></td>
+                               '<%=(stUpdate==null?"":stUpdate.getName())%>'>
+                    </td>
                 </tr>
                 <tr>
                     <td>Gender</td>
                     <td> 
                         <input type="radio" name="Gender" value="M"
-                               <%=(stUpdate==null||stUpdate.isGender()?"checked":"")%>>Male
+                               <%=stUpdate==null||stUpdate.isGender()?"checked":""%>>Male
                         <input type="radio" name="Gender" value="F"
-                               <%=(stUpdate==null||stUpdate.isGender()?"":"checked")%>>Female
+                               <%=stUpdate==null||stUpdate.isGender()?"":"checked"%>>Female
                     </td>
                 </tr>
                 <tr>
@@ -95,8 +96,8 @@
                     <td>Dob</td>
                     <td><input type="date" name="Dob" value=
                                '<%=(stUpdate==null?"2000-01-01":(stUpdate.getDob()==null?
-                                       "2000-01-01":stUpdate.getDob()))%>'
-                                       ></td>
+                                       "2000-01-01":stUpdate.getDob()))%>'>
+                    </td>
                 </tr>
             </table>
             <input type='submit' name='btnInsert' value='Insert'>

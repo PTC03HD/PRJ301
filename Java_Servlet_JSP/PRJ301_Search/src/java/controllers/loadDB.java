@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Map;
+import java.util.Vector;
 import models.Department;
 import models.Student;
 
@@ -21,11 +22,11 @@ import models.Student;
  * @author phamt
  */
 public class loadDB extends HttpServlet {
-    DAO d;
+    DAO d = DAO.INSTANCE;
 
-    public void init() { //triển khai
-        d = new DAO();
-    }
+//    public void init() { //triển khai
+//        new DAO();
+//    }
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -182,11 +183,13 @@ public class loadDB extends HttpServlet {
                 }
             }else{}
         }
-        d.loadDB();
-        request.setAttribute("dao", d);
 //        request.getRequestDispatcher("Views/loadDB.jsp").forward(request, response);
-        request.getRequestDispatcher("Views/loadDB01.jsp").forward(request, response);
+//        request.getRequestDispatcher("Views/loadDB01.jsp").forward(request, response);
 //        processRequest(request, response);
+        
+        DAO.INSTANCE.loadDB();
+        request.setAttribute("dao", DAO.INSTANCE);
+        request.getRequestDispatcher("Views/search.jsp").forward(request, response);
     } 
 
     /** 
@@ -199,36 +202,56 @@ public class loadDB extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        Object o1 = request.getParameter("btnUpdate");
-        Object o2 = request.getParameter("btnInsert");
+//        Object o1 = request.getParameter("btnUpdate");
+//        Object o2 = request.getParameter("btnInsert");
+//
+//        String id = request.getParameter("id");
+//        String name = request.getParameter("name");
+//        Object obj = request.getParameter("gender");
+//        boolean gender = obj!=null && ((obj+"").equals("M"));
+//        String departId = request.getParameter("departId");
+//        int age = Integer.parseInt(request.getParameter("age"));
+//        float gpa = Float.parseFloat(request.getParameter("gpa"));
+//        String add = request.getParameter("add");
+//        String dob = request.getParameter("dob");
+//        
+//        boolean checkUpdate = false;
+//        for(Student st : d.getStd()){
+//            if(st.getId().equals(id)) {
+//                checkUpdate = true;
+//                break;
+//            }
+//        }
+//        
+//        if(o1 != null && checkUpdate){
+//            d.Update(id, name, gender, departId, age, gpa, add, dob);
+//        }
+//        if(o2 != null && !checkUpdate){
+//            d.Insert(id, name, gender, departId, age, gpa, add, dob);
+//        }
+////        d.Insert(id, name, gender, departId, age, gpa, add, dob);
+////        d.Update(id, name, gender, departId, age, gpa, add, dob);
+//        doGet(request, response);
 
-        String id = request.getParameter("id");
-        String name = request.getParameter("name");
-        Object obj = request.getParameter("gender");
-        boolean gender = obj!=null && ((obj+"").equals("M"));
-        String departId = request.getParameter("departId");
-        int age = Integer.parseInt(request.getParameter("age"));
-        float gpa = Float.parseFloat(request.getParameter("gpa"));
-        String add = request.getParameter("add");
-        String dob = request.getParameter("dob");
-        
-        boolean checkUpdate = false;
-        for(Student st : d.getStd()){
-            if(st.getId().equals(id)) {
-                checkUpdate = true;
-                break;
+        Vector<String> listCheck = new Vector<String>();
+        for (Map.Entry<String, Department> entry : DAO.INSTANCE.getDept().entrySet()) {
+            String key = entry.getKey();
+            if(request.getParameter("chk"+key)!=null) listCheck.add(key);
+        }
+        String txt = request.getParameter("txtSearch");
+        String mess = "";
+        if(listCheck.size()==0){mess = "select nothing";}
+        else {
+            String s1 ="";
+            for(String lc : listCheck){
+                s1+=lc+" like '%"+txt+"%' or";
             }
+            s1=s1.substring(0, s1.length()-3);
+            s1="select * from Student where" + s1;
+            mess = s1;
         }
-        
-        if(o1 != null && checkUpdate){
-            d.Update(id, name, gender, departId, age, gpa, add, dob);
-        }
-        if(o2 != null && !checkUpdate){
-            d.Insert(id, name, gender, departId, age, gpa, add, dob);
-        }
-//        d.Insert(id, name, gender, departId, age, gpa, add, dob);
-//        d.Update(id, name, gender, departId, age, gpa, add, dob);
-        doGet(request, response);
+        request.setAttribute("sql", mess);
+        request.getRequestDispatcher("Views/search.jsp").forward(request, response);
     }
 
     /** 
