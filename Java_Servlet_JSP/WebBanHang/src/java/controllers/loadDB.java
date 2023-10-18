@@ -5,12 +5,14 @@
 
 package controllers;
 
+import DAL.DAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import models.*;
 
 /**
  *
@@ -25,6 +27,10 @@ public class loadDB extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    DAO d;
+    public void init() { //triển khai
+        d = new DAO();
+    }
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -53,9 +59,12 @@ public class loadDB extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        request.getRequestDispatcher("Views/store.jsp").forward(request, response);
+        d.loadDB();
+        request.setAttribute("dao", d);
+//        processRequest(request, response);
+        request.getRequestDispatcher("Views/index.jsp").forward(request, response);
     } 
-
+    
     /** 
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request

@@ -1,6 +1,6 @@
 <%-- 
     Document   : checkout
-    Created on : Oct 17, 2023, 10:50:43 AM
+    Created on : Oct 19, 2023, 12:28:43 AM
     Author     : phamt
 --%>
 
@@ -534,4 +534,3 @@
 
     </body>
 </html>
-
