@@ -14,7 +14,52 @@ public class DAO {
     private List<Student> std;
     private List<Menus> menu;
     private HashMap<String, Department> dept;
+    private HashMap<String, String> field;
+    private List<Student> fStd;
+    private List<Student> sStd;
+    String sqlf;
 
+    public void loadField(){
+       field = new HashMap<String, String>();
+       field.put("Id", "Id");
+       field.put("Name", "Name");
+       field.put("Gender", "Gender");
+       field.put("Departid", "Department");
+       field.put("Age", "Age");
+       field.put("Gpa", "Gpa");
+       field.put("Add", "Add");
+       field.put("Dob", "Date of birth");
+    }
+
+    public List<Student> getsStd() {
+        return sStd;
+    }
+
+    public void setsStd(List<Student> sStd) {
+        this.sStd = sStd;
+    }
+
+    
+    
+    public HashMap<String, String> getField() {
+        return field;
+    }
+
+    public void setField(HashMap<String, String> field) {
+        this.field = field;
+    }
+    
+    
+    
+    public String getSqlf() {
+        return sqlf;
+    }
+
+    public void setSqlf(String sqlf) {
+        this.sqlf = sqlf;
+    }
+    
+    
     public Connection getCon() {
         return con;
     }
@@ -30,6 +75,15 @@ public class DAO {
     public void setMenu(List<Menus> menu) {
         this.menu = menu;
     }
+
+    public List<Student> getfStd() {
+        return fStd;
+    }
+
+    public void setfStd(List<Student> fStd) {
+        this.fStd = fStd;
+    }
+    
     
     public void loadMenu(){
         menu = new Vector<Menus>();
@@ -136,7 +190,7 @@ public class DAO {
     }
 
     public void Update(String id, String name, boolean gender, String departId, 
-            int age, float gpa, String add, String dob) {
+        int age, float gpa, String add, String dob) {
         String sql = "UPDATE Student SET [Name] = ? ,[Gender] = ? ,[Departid] = ? "
                 + ",[Age] = ? ,[Gpa] = ? ,[Add] = ? ,[Dob] = ? WHERE id = ?";
         try {
@@ -165,4 +219,79 @@ public class DAO {
             status = "Error at Delete Student: " + e.getMessage();
         }
     }
+    public void filter(String deptf[], String genderf[]){
+        String sql = "select * from Student ";
+        if(deptf!=null){
+            for(int i = 0; i < deptf.length; i++){
+                if(deptf[i]!=null){
+                    sql += (i==0)?"where (Departid=? or ":"Departid=? or ";
+                }
+                sql += (i==deptf.length-1)?"1!=1)":"";
+            }
+        }
+        if(genderf != null && genderf.length > 0){
+            sql += deptf!=null&&deptf.length>0?" and (":"where (";
+            sql += genderf.length>=1?"Gender=? or ":"1!=1)";
+            sql += genderf.length==2?"Gender=?)":"1!=1)";
+        }
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            if(deptf!=null&&deptf.length>0){
+                for(int i=0; i<deptf.length; i++){
+                    if(deptf[i]!=null){
+                        ps.setString(i+1, deptf[i]);
+                    }
+                }
+            }
+            if(genderf!=null && genderf.length>0){
+                if(genderf.length<=2)
+                    ps.setInt(deptf!=null?deptf.length+1:1, Integer.parseInt(genderf[0]));
+                if(genderf.length==2)
+                    ps.setInt(deptf!=null?deptf.length+2:2, Integer.parseInt(genderf[1]));
+            }
+            
+            ResultSet rs = ps.executeQuery();
+            fStd = new Vector<>();
+            while(rs.next()){
+                fStd.add(new Student(
+                        rs.getString(1),
+                        rs.getString(2),
+                        rs.getBoolean(3),
+                        rs.getString(4),
+                        rs.getInt(5),
+                        rs.getFloat(6),
+                        rs.getString(7),
+                        rs.getDate(8)
+                ));
+            }
+        } catch (Exception e) {
+            status = "Error at filter by department: "+e.getMessage();
+        }
+        sqlf=sql;
+    }
+    
+    public void Search(String mess){
+        sStd = new Vector<>();
+        String sql="";
+        sql=mess;
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                sStd.add(new Student(
+                        rs.getString(1),
+                        rs.getString(2),
+                        rs.getBoolean(3),
+                        rs.getString(4),
+                        rs.getInt(5),
+                        rs.getFloat(6),
+                        rs.getString(7),
+                        rs.getDate(8)
+                ));
+            }
+        } catch (Exception e) {
+            status = "Error at read search Student " + e.getMessage();
+        }
+        sqlf=sql;
+    } 
 }

@@ -12,8 +12,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 import models.Department;
+import models.Paging;
 import models.Student;
 
 /**
@@ -72,7 +76,7 @@ public class loadDB extends HttpServlet {
                 s += "<td>" + std.getGpa() + "</td>";
                 s += "<td>" + std.getAdd() + "</td>";
                 s += "<td>" + std.getDob() + "</td>";
-                
+
                 s += "<td><a href='loadDB?type=0&id="+std.getId()+"'>Update </td>";
                 s += "<td><a href='loadDB?type=1&id="+std.getId()+"'>Delete </td>";
                 s += "</tr>";
@@ -162,30 +166,47 @@ public class loadDB extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
+    int nrppArr[] = {1,2,3,4,5,6,7,8,9,10,20,30,40,50,500,1000,2000};
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        Object o1 = request.getParameter("type");
-        if(o1!= null){  //tham số type đã được gửi trong yêu cầu HTTP
-            if((o1+"").equals("0")){
-                //update
-                Object o2 = request.getParameter("id");
-                if(o2 != null){
-                    request.setAttribute("update", o2+"");
-                }else{
-                    request.removeAttribute("update");
-                }
-            }else if((o1+"").equals("1")){
-                Object o3 = request.getParameter("id");
-                if(o3!= null){
-                    d.Delete(o3+"");
-                }
-            }else{}
-        }
+//        Object o1 = request.getParameter("type");
+//        if(o1!= null){  //tham số type đã được gửi trong yêu cầu HTTP
+//            if((o1+"").equals("0")){
+//                //update
+//                Object o2 = request.getParameter("id");
+//                if(o2 != null){
+//                    request.setAttribute("update", o2+"");
+//                }else{
+//                    request.removeAttribute("update");
+//                }
+//            }else if((o1+"").equals("1")){
+//                Object o3 = request.getParameter("id");
+//                if(o3!= null){
+//                    d.Delete(o3+"");
+//                }
+//            }else{}
+//        }
         d.loadDB();
+        int nrpp = 5; //tính lại sau
+        try {
+            nrpp = (int)request.getAttribute("nrpp");
+        } catch (Exception e) {
+        }
+        int index = -1;
+        try {
+            index = Integer.parseInt(request.getAttribute("index")+"");
+        } catch (Exception e) {
+        }
+        
+        Paging p = new Paging(nrpp, index, d.getStd().size());
+        p.calc();
+        request.setAttribute("nrppArr", nrppArr);
+        request.setAttribute("page", p);
         request.setAttribute("dao", d);
 //        request.getRequestDispatcher("Views/loadDB.jsp").forward(request, response);
-        request.getRequestDispatcher("Views/loadDB01.jsp").forward(request, response);
+        request.getRequestDispatcher("Views/loadDB02.jsp").forward(request, response);
 //        processRequest(request, response);
     } 
 
@@ -201,17 +222,20 @@ public class loadDB extends HttpServlet {
     throws ServletException, IOException {
         Object o1 = request.getParameter("btnUpdate");
         Object o2 = request.getParameter("btnInsert");
-
+        Object o3 = request.getParameter("btnCheckbox");
+        Object o4 = request.getParameter("btnRadio");
+        Object o5 = request.getParameter("btnCombobox");
+        Object o6 = request.getParameter("btnSearch");
+        
         String id = request.getParameter("id");
         String name = request.getParameter("name");
         Object obj = request.getParameter("gender");
         boolean gender = obj!=null && ((obj+"").equals("M"));
         String departId = request.getParameter("departId");
-        int age = Integer.parseInt(request.getParameter("age"));
-        float gpa = Float.parseFloat(request.getParameter("gpa"));
+        int age = o3!=null||o4!=null||o5!=null||o6!=null||o1==null?0:Integer.parseInt(request.getParameter("age"));
+        float gpa = o3!=null||o4!=null||o5!=null||o6!=null||o1==null?0:Float.parseFloat(request.getParameter("gpa"));
         String add = request.getParameter("add");
         String dob = request.getParameter("dob");
-        
         boolean checkUpdate = false;
         for(Student st : d.getStd()){
             if(st.getId().equals(id)) {
@@ -220,14 +244,76 @@ public class loadDB extends HttpServlet {
             }
         }
         
+        //filter
+//        String[] deptf1 = request.getParameterValues("deptFI");
+//        String[] genderf1 = request.getParameterValues("genderFI");
+//        List<String> deptf2 = new ArrayList<>();
+//        List<String> genderf2 = new ArrayList<>();
+//        String[] deptf3 = request.getParameterValues("deptFII");
+//        String[] genderf3 = request.getParameterValues("genderFII");
+//        for(Map.Entry<String, Department> m : d.getDept().entrySet()){
+//            if(request.getParameter("deptF"+m.getKey())!=null){
+//                deptf2.add(request.getParameter("deptF"+m.getKey()));
+//            }
+//        }
+//        for(int j=0; j<2; j++){
+//            if(request.getParameter("genderF"+j)!=null){
+//                genderf2.add(request.getParameter("genderF"+j));
+//            }
+//        }
+//        //search
+//       d.loadField();
+//       
+//        Vector <String> ListCheck=new Vector<String>();
+//        for (Map.Entry<String,String> entry : d.getField().entrySet()) {
+//            String key= entry.getKey();
+//            if(request.getParameter("chk"+key)!=null) ListCheck.add(key);
+//        }
+//        String s1="";
+//        String txt =request.getParameter("txtSearch");
+//        String mess="";
+//        if(ListCheck.isEmpty()){
+//            s1="select nothing";
+//        }else{
+//            for (String lc : ListCheck) {
+//                s1+="["+lc+"]"+" LIKE '%"+txt+"%' or ";
+//            }
+//            
+//            s1=s1.substring(0, s1.length()-3);
+//            s1="select * from Student where " +s1;
+//            mess=s1;
+//        }
+//        if(o6!=null){
+//            d.Search(mess);
+//        }
+//        request.setAttribute("mess", mess);
         if(o1 != null && checkUpdate){
-            d.Update(id, name, gender, departId, age, gpa, add, dob);
+            d.Update(id, name, gender, departId , age, gpa, add, dob);
         }
         if(o2 != null && !checkUpdate){
             d.Insert(id, name, gender, departId, age, gpa, add, dob);
         }
-//        d.Insert(id, name, gender, departId, age, gpa, add, dob);
-//        d.Update(id, name, gender, departId, age, gpa, add, dob);
+        
+//        if(o3 != null) d.filter(deptf1, genderf1);
+//        else if(o4 != null) d.filter(deptf2.toArray(new String[0]), genderf2.toArray(new String[0]));
+//        else if(o5!=null) d.filter(deptf3, genderf3);
+//        else d.setfStd(d.getStd());
+        
+        d.Insert(id, name, gender, departId, age, gpa, add, dob);
+        d.Update(id, name, gender, departId, age, gpa, add, dob);
+        
+        int index = Integer.parseInt(request.getParameter("index"));
+        int totalPage = Integer.parseInt(request.getParameter("totalPage"));
+        if(request.getParameter("btnHome")!=null) index = 0;
+        if(request.getParameter("btnPre")!=null)index -=1;
+        if(request.getParameter("btnNext")!=null)index +=1;
+        if(request.getParameter("btnEnd")!=null)index = totalPage;
+        for (int i=0; i<totalPage; i++) {
+            if(request.getParameter("btn"+i)!=null) index = i;
+        }
+        int nrpp = Integer.parseInt(request.getParameter("nrpp"));
+        request.setAttribute("nrpp", nrpp);
+        request.setAttribute("index", index);
         doGet(request, response);
     }
 
