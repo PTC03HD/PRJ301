@@ -61,7 +61,11 @@ public class loadDB extends HttpServlet {
     throws ServletException, IOException {
         d.loadDB();
         request.setAttribute("dao", d);
-//        processRequest(request, response);
+        String page = request.getParameter("page");
+        request.setAttribute("page", page);
+        if(page!=null){
+            request.getRequestDispatcher("Views/"+page+".jsp").forward(request, response);
+        }
         request.getRequestDispatcher("Views/index.jsp").forward(request, response);
     } 
     

@@ -20,11 +20,12 @@ public class Product {
     private int quantity;
     private String img;
     private String discount;
+    private int hot;
 
     public Product() {
     }
 
-    public Product(String id, int cateId, String name, int price, String desc, int quantity, String img, String discount) {
+    public Product(String id, int cateId, String name, int price, String desc, int quantity, String img, String discount, int hot) {
         this.id = id;
         this.cateId = cateId;
         this.name = name;
@@ -33,6 +34,7 @@ public class Product {
         this.quantity = quantity;
         this.img = img;
         this.discount = discount;
+        this.hot = hot;
     }
 
     public String getId() {
@@ -98,9 +100,20 @@ public class Product {
     public void setDiscount(String discount) {
         this.discount = discount;
     }
-    
-    public String convertMoney(int money){
-        NumberFormat format = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
-        return format.format(money);
+
+    public int getHot() {
+        return hot;
     }
+
+    public void setHot(int hot) {
+        this.hot = hot;
+    }
+    
+    
+    
+    public String convertPrice(){
+        NumberFormat format = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+        return format.format(price);
+    }
+    
 }

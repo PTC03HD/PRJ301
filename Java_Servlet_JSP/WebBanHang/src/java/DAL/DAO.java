@@ -13,6 +13,7 @@ public class DAO {
     private String status = "OK";
     private List<Product> p;
     private List<Category> c;
+    private List<Users> u;
 
     public DAO(){
         try {
@@ -28,6 +29,38 @@ public class DAO {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Connection getCon() {
+        return con;
+    }
+
+    public void setCon(Connection con) {
+        this.con = con;
+    }
+
+    public List<Product> getP() {
+        return p;
+    }
+
+    public void setP(List<Product> p) {
+        this.p = p;
+    }
+
+    public List<Category> getC() {
+        return c;
+    }
+
+    public void setC(List<Category> c) {
+        this.c = c;
+    }
+
+    public List<Users> getU() {
+        return u;
+    }
+
+    public void setU(List<Users> u) {
+        this.u = u;
     }
     
     public void loadDB() {
@@ -45,7 +78,8 @@ public class DAO {
                         rs.getString(5), 
                         rs.getInt(6), 
                         rs.getString(7), 
-                        rs.getString(8)));
+                        rs.getString(8),
+                        rs.getInt(9)));
             }
         } catch (Exception e) {
             status = "Error at load Product: " + e.getMessage();
@@ -62,5 +96,60 @@ public class DAO {
         } catch (Exception e) {
             status = "Error at load Category: "+e.getMessage();
         }
+        
+        sql = "select * from users";
+        u = new Vector<>();
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                u.add(new Users(rs.getString(2), 
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getBoolean(5),
+                        rs.getString(6)));
+            }
+        } catch (Exception e) {
+            status = "Error at load Category: "+e.getMessage();
+        }
+    }
+    
+    public void signup(String username, String email, String password, int isAdmin, String phoneNum){
+        String sql = "INSERT INTO users ([user_name], user_email, user_pass, isAdmin, phoneNum) VALUES(?,?,?,?,?)";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, username);
+            ps.setString(2, email);
+            ps.setString(3, password);
+            if(isAdmin==1){
+                ps.setInt(4, 0);
+            }else{
+                ps.setNull(4, java.sql.Types.INTEGER);
+            }
+            ps.setString(5, phoneNum);
+            ps.execute();
+        } catch (Exception e) {
+            status = "Error at insert user: "+e.getMessage();
+        }
+    }
+    
+    public boolean checkUserExist(String username, String email, String phoneNum){
+        for (Users user : u) {
+            if(user.getUsername().equals(username)||
+                    user.getUserEmail().equals(email)||
+                    user.getPhoneNum().equals(phoneNum)){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public Users checkLogin(String username, String password){
+        for (Users user : u) {
+            if(user.getUsername().equals(username) && user.getUserPass().equals(password)){
+                return user;
+            }
+        }
+        return null;
     }
 }
