@@ -12,13 +12,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import models.*;
 
 /**
  *
  * @author phamt
  */
-public class loadDB extends HttpServlet {
+
+public class PagingControl extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -28,7 +28,7 @@ public class loadDB extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     DAO d;
-    public void init() { //triển khai
+    public void init(){
         d = new DAO();
     }
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -39,10 +39,10 @@ public class loadDB extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet loadDB</title>");  
+            out.println("<title>Servlet PagingControl</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet loadDB at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet PagingControl at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,25 +61,20 @@ public class loadDB extends HttpServlet {
     throws ServletException, IOException {
         d.loadDB();
         request.setAttribute("dao", d);
-        String page = request.getParameter("page");
-        String pid = request.getParameter("pid");
-        request.setAttribute("pid", pid);
-        if(pid!=null){
-            for (Product pro : d.getP()) {
-                if(pro.getId().equals(pid)){
-                    request.setAttribute("product", pro);
-                }
-            }
+        int count = d.getTotalProduct();
+        int endPage = count%6==0?count/6:(count/6)+1;
+        String index = request.getParameter("index");
+        request.setAttribute("index", index);
+        if(index!=null){
+            d.pagingProduct(Integer.parseInt(request.getParameter("index")),6);
+        } else{
+            d.pagingProduct(1, 6);
         }
-        if(page!=null){
-            if(page.equals("shop")){
-                request.getRequestDispatcher("paging").forward(request, response);
-            }
-            request.getRequestDispatcher("Views/"+page+".jsp").forward(request, response);
-        }
-        request.getRequestDispatcher("Views/detail.jsp").forward(request, response);
+        request.setAttribute("endP", endPage);
+        request.getRequestDispatcher("Views/shop.jsp").forward(request, response);
+//        processRequest(request, response);
     } 
-    
+
     /** 
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request

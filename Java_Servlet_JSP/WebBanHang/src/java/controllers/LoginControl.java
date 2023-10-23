@@ -80,7 +80,7 @@ public class LoginControl extends HttpServlet {
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
         String password = request.getParameter("password");
-        int isAdmin = request.getParameter("chkIsSeller").equals("0")?0:1;
+        int isAdmin = signup!=null?(request.getParameter("chkIsSeller").equals("0")?0:1):0;
         request.setAttribute("alert", login);
         if(login != null){
             Users a = d.checkLogin(username, password);

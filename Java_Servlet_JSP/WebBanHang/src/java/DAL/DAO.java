@@ -14,6 +14,7 @@ public class DAO {
     private List<Product> p;
     private List<Category> c;
     private List<Users> u;
+    private List<Product> pagingPro;
 
     public DAO(){
         try {
@@ -62,6 +63,16 @@ public class DAO {
     public void setU(List<Users> u) {
         this.u = u;
     }
+
+    public List<Product> getPagingPro() {
+        return pagingPro;
+    }
+
+    public void setPagingPro(List<Product> pagingPro) {
+        this.pagingPro = pagingPro;
+    }
+    
+    
     
     public void loadDB() {
         String sql = "select * from Product";
@@ -151,5 +162,49 @@ public class DAO {
             }
         }
         return null;
+    }
+    
+    public int getTotalProduct(){
+        String sql = "select count(*) from Product";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+            status = "Error at check total account: "+e.getMessage();
+        }
+        return 0;
+    }
+    
+    public void pagingProduct(int index, int nrpp){
+        pagingPro = new Vector<>();
+        String sql = "select * from Product order by category_id offset ? row fetch next ? rows only";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, (index-1)*nrpp);
+            ps.setInt(2, nrpp);
+            ResultSet rs = ps.executeQuery();
+                        while(rs.next()){
+                pagingPro.add(new Product(
+                        rs.getString(1), 
+                        rs.getInt(2),
+                        rs.getString(3), 
+                        rs.getInt(4), 
+                        rs.getString(5), 
+                        rs.getInt(6), 
+                        rs.getString(7), 
+                        rs.getString(8),
+                        rs.getInt(9)));
+            }
+        } catch (Exception e) {
+            status = "Error at paging Product: "+e.getMessage();
+        }
+    }
+    
+    public static void main(String[] args) {
+        DAO d = new DAO();
+        
     }
 }
