@@ -13,14 +13,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import jakarta.websocket.Session;
-import models.*;
 
 /**
  *
  * @author phamt
  */
-public class loadDB extends HttpServlet {
+public class LogoutControl extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -30,7 +28,7 @@ public class loadDB extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     DAO d;
-    public void init() { //triển khai
+    public void init(){
         d = new DAO();
     }
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -41,10 +39,10 @@ public class loadDB extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet loadDB</title>");  
+            out.println("<title>Servlet LogoutControl</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet loadDB at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet LogoutControl at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,35 +60,11 @@ public class loadDB extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         d.loadDB();
-        request.setAttribute("dao", d);
-        String page = request.getParameter("page");
-        String pid = request.getParameter("pid");
-        String action = request.getParameter("action");
-        request.setAttribute("pid", pid);
         HttpSession session = request.getSession();
-        Users acc = (Users)session.getAttribute("acc");
-        if(pid!=null){
-            for (Product pro : d.getP()) {
-                if(pro.getId().equals(pid)){
-                    request.setAttribute("product", pro);
-                }
-            }
-        }
-        if(acc!=null){
-            request.setAttribute("acc", acc);
-        }
-        if(page!=null){
-            if(page.equals("shop")){
-                request.getRequestDispatcher("paging").forward(request, response);
-            }
-            request.getRequestDispatcher("Views/"+page+".jsp").forward(request, response);
-        }
-        if(action!=null&&action.equals("logout")){
-            request.getRequestDispatcher("LogoutControl.java").forward(request, response);
-        }
-        request.getRequestDispatcher("Views/myAccount.jsp").forward(request, response);
+        session.invalidate();
+        request.getRequestDispatcher("Views/index.jsp").forward(request, response);
     } 
-    
+
     /** 
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request

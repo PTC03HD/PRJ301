@@ -28,58 +28,60 @@
         <!-- theme stylesheet-->    
         <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
         <!-- Custom stylesheet - for your changes-->
-        <link rel="stylesheet" href="css/custom.css">
+        <link rel="stylesheet" href="css/styleMyAccount.css">
         <!-- Favicon-->
         <link rel="shortcut icon" href="img/favicon.png">
+        <!--Plugin-->
+        <link rel="stylesheet" href="css/plugin.css"/>
     </head>
     <body>
-        <h1>${login}</h1> 
-        <div class="page-holder">
-            <!-- navbar-->
-            <header class="header bg-white">
-                <div class="container px-lg-3">
-                    <nav class="navbar navbar-expand-lg navbar-light py-3 px-lg-0"><a class="navbar-brand" href="loadDB?page=index"><span class="fw-bold text-uppercase text-dark">Boutique</span></a>
-                        <button class="navbar-toggler navbar-toggler-end" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav me-auto">
-                                <li class="nav-item">
-                                    <!-- Link--><a class="nav-link active" href="loadDB?page=index">Home</a>
-                                </li>
-                                <li class="nav-item">
-                                    <!-- Link--><a class="nav-link" href="loadDB?page=shop">Shop</a>
-                                </li>
-                                <li class="nav-item">
-                                    <!-- Link--><a class="nav-link" href="loadDB?page=detail">Product detail</a>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" id="pagesDropdown" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
-                                    <div class="dropdown-menu mt-3 shadow-sm" aria-labelledby="pagesDropdown">
-                                        <a class="dropdown-item border-0 transition-link" href="loadDB?page=index">Homepage</a>
-                                        <a class="dropdown-item border-0 transition-link" href="loadDB?page=shop">Category</a>
-                                        <a class="dropdown-item border-0 transition-link" href="loadDB?page=detail">Product detail</a>
-                                        <a class="dropdown-item border-0 transition-link" href="loadDB?page=cart">Shopping cart</a>
-                                        <a class="dropdown-item border-0 transition-link" href="loadDB?page=checkout">Checkout</a>
-                                    </div>
-                                </li>
-                            </ul>
-                            <ul class="navbar-nav ms-auto">               
-                                <li class="nav-item">
-                                    <a class="nav-link" href="loadDB?page=cart"> 
-                                        <i class="fas fa-dolly-flatbed me-1 text-gray"></i>Cart
-                                        <small class="text-gray fw-normal">(2)</small></a>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" id="pagesDropdown" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
-                                    <div class="dropdown-menu mt-3 shadow-sm" aria-labelledby="pagesDropdown">
-                                        <a class="dropdown-item border-0 transition-link" href="loadDB?page=login">Login/Sign Up</a>
-                                        <a class="dropdown-item border-0 transition-link" href="loadDB?page=login">Logout</a>
-                                        <a class="dropdown-item border-0 transition-link" href="loadDB?page=login">Account detail</a>
-                                    </div>
-                            </ul>
-                        </div>
-                    </nav>
-                </div>
-            </header>
+    <div class="page-holder">
+      <!-- navbar-->
+      <header class="header bg-white">
+        <div class="container px-lg-3">
+          <nav class="navbar navbar-expand-lg navbar-light py-3 px-lg-0"><a class="navbar-brand" href="loadDB?page=index"><span class="fw-bold text-uppercase text-dark">Boutique</span></a>
+            <button class="navbar-toggler navbar-toggler-end" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                  <!-- Link--><a class="nav-link active" href="loadDB?page=index">Home</a>
+                </li>
+                <li class="nav-item">
+                  <!-- Link--><a class="nav-link" href="loadDB?page=shop&index=1">Shop</a>
+                </li>
+                <li class="nav-item">
+                  <!-- Link--><a class="nav-link" href="loadDB?page=detail">Product detail</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="pagesDropdown" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
+                  <div class="dropdown-menu mt-3 shadow-sm" aria-labelledby="pagesDropdown">
+                      <a class="dropdown-item border-0 transition-link" href="loadDB?page=index">Homepage</a>
+                      <a class="dropdown-item border-0 transition-link" href="loadDB?page=shop&index=1">Category</a>
+                      <a class="dropdown-item border-0 transition-link" href="loadDB?page=detail">Product detail</a>
+                      <a class="dropdown-item border-0 transition-link" href="loadDB?page=cart">Shopping cart</a>
+                      <a class="dropdown-item border-0 transition-link" href="loadDB?page=checkout">Checkout</a>
+                  </div>
+                </li>
+              </ul>
+              <ul class="navbar-nav ms-auto">               
+                <li class="nav-item">
+                    <a class="nav-link" href="loadDB?page=cart"> 
+                        <i class="fas fa-dolly-flatbed me-1 text-gray"></i>Cart
+                        <small class="text-gray fw-normal">(2)</small></a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="pagesDropdown" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${acc==null?"Account":acc.username}</a>
+                  <div class="dropdown-menu mt-3 shadow-sm" aria-labelledby="pagesDropdown">
+                      <a class="dropdown-item border-0 transition-link" href="loadDB?page=login">Login/Sign Up</a>
+                      <a class="dropdown-item border-0 transition-link" href="logout?action=logout">Logout</a>
+                      <a class="dropdown-item border-0 transition-link" href="loadDB?page=myAccount">Account detail</a>
+                  </div>
+              </ul>
+            </div>
+          </nav>
+        </div>
+      </header>
+            <!-- my account start  -->
             <section class="main_content_area">
                 <div class="container">   
                     <div class="account_dashboard">
@@ -90,7 +92,7 @@
                                     <ul role="tablist" class="nav flex-column dashboard-list">
                                         <li><a href="#account-details" data-toggle="tab" class="nav-link">Tài khoản của tôi</a></li>
                                         <li> <a href="#orders" data-toggle="tab" class="nav-link">Đơn hàng</a></li>
-                                        <li><a href="user?action=logout" class="nav-link">Đăng xuất</a></li>
+                                        <li><a href="logout?action=logout" class="nav-link">Đăng xuất</a></li>
                                     </ul>
                                 </div>    
                             </div>
@@ -133,13 +135,15 @@
                                                 <div class="account_login_form">
                                                     <form action="user?action=updateinfo" method="POST">
                                                         <label>Tên người dùng</label>
-                                                        <input type="text" name="user_name" value="${sessionScope.user.user_name}">
+                                                        <input type="text" name="user_name" value="${sessionScope.acc.username}">
                                                         <label>Email</label>
-                                                        <input type="text" readonly name="user_email" value="${sessionScope.user.user_email}">
+                                                        <input type="text" readonly name="user_email" value="${sessionScope.acc.userEmail}">
+                                                        <label>Phone Number</label>
+                                                        <input type="text" readonly name="user_phoneNum" value="${sessionScope.acc.phoneNum}">
                                                         <label>Password</label>
-                                                        <input type="password" name="user_pass" value="${sessionScope.user.user_pass}">
+                                                        <input type="password" name="user_pass" value="${sessionScope.acc.userPass}">
                                                         <div class="cart_submit">
-                                                            <button type="submit">save</button>
+                                                            <button type="submit" name="btnChangePass">save</button>
                                                         </div> 
                                                     </form>
                                                 </div>
@@ -151,7 +155,8 @@
                         </div>
                     </div>  
                 </div>        	
-            </section>
+            </section>			
+            <!--footer-->	
             <footer class="bg-dark text-white">
                 <div class="container py-4">
                     <div class="row py-5">
@@ -203,6 +208,7 @@
             <script src="vendor/swiper/swiper-bundle.min.js"></script>
             <script src="vendor/choices.js/public/assets/scripts/choices.min.js"></script>
             <script src="js/front.js"></script>
+            <script src="js/plugins.js"></script>
             <script>
                 // ------------------------------------------------------- //
                 //   Inject SVG Sprite - 

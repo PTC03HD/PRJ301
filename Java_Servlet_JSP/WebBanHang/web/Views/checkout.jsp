@@ -42,10 +42,10 @@
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav me-auto">
                                 <li class="nav-item">
-                                    <!-- Link--><a class="nav-link active" href="loadDB?page=index">Home</a>
+                                    <!-- Link--><a class="nav-link" href="loadDB?page=index">Home</a>
                                 </li>
                                 <li class="nav-item">
-                                    <!-- Link--><a class="nav-link" href="loadDB?page=shop">Shop</a>
+                                    <!-- Link--><a class="nav-link" href="loadDB?page=shop&index=1">Shop</a>
                                 </li>
                                 <li class="nav-item">
                                     <!-- Link--><a class="nav-link" href="loadDB?page=detail">Product detail</a>
@@ -54,7 +54,7 @@
                                     <a class="nav-link dropdown-toggle" id="pagesDropdown" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
                                     <div class="dropdown-menu mt-3 shadow-sm" aria-labelledby="pagesDropdown">
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=index">Homepage</a>
-                                        <a class="dropdown-item border-0 transition-link" href="loadDB?page=shop">Category</a>
+                                        <a class="dropdown-item border-0 transition-link" href="loadDB?page=shop&index=1">Category</a>
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=detail">Product detail</a>
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=cart">Shopping cart</a>
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=checkout">Checkout</a>
@@ -68,11 +68,11 @@
                                         <small class="text-gray fw-normal">(2)</small></a>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" id="pagesDropdown" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
+                                    <a class="nav-link dropdown-toggle" id="pagesDropdown" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${acc==null?"Account":acc.username}</a>
                                     <div class="dropdown-menu mt-3 shadow-sm" aria-labelledby="pagesDropdown">
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=login">Login/Sign Up</a>
-                                        <a class="dropdown-item border-0 transition-link" href="loadDB?page=login">Logout</a>
-                                        <a class="dropdown-item border-0 transition-link" href="loadDB?page=login">Account detail</a>
+                                        <a class="dropdown-item border-0 transition-link" href="logout?action=logout">Logout</a>
+                                        <a class="dropdown-item border-0 transition-link" href="loadDB?page=myAccount">Account detail</a>
                                     </div>
                             </ul>
                         </div>
@@ -109,7 +109,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-5"><a class="btn btn-dark btn-sm w-100 h-100 d-flex align-items-center justify-content-center px-0" href="cart.html">Add to cart</a></div>
+                                            <div class="col-sm-5"><a class="btn btn-dark btn-sm w-100 h-100 d-flex align-items-center justify-content-center px-0" href="loadDB?page=cart">Add to cart</a></div>
                                         </div><a class="btn btn-link text-dark text-decoration-none p-0" href="#!"><i class="far fa-heart me-2"></i>Add to wish list</a>
                                     </div>
                                 </div>
@@ -129,8 +129,8 @@
                             <div class="col-lg-6 text-lg-end">
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb justify-content-lg-end mb-0 px-0 bg-light">
-                                        <li class="breadcrumb-item"><a class="text-dark" href="index.html">Home</a></li>
-                                        <li class="breadcrumb-item"><a class="text-dark" href="cart.html">Cart</a></li>
+                                        <li class="breadcrumb-item"><a class="text-dark" href="loadDB?page=index">Home</a></li>
+                                        <li class="breadcrumb-item"><a class="text-dark" href="loadDB?page=cart">Cart</a></li>
                                         <li class="breadcrumb-item active" aria-current="page">Checkout</li>
                                     </ol>
                                 </nav>

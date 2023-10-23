@@ -12,6 +12,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import models.*;
 
 /**
@@ -82,8 +83,10 @@ public class LoginControl extends HttpServlet {
         String password = request.getParameter("password");
         int isAdmin = signup!=null?(request.getParameter("chkIsSeller").equals("0")?0:1):0;
         request.setAttribute("alert", login);
+        HttpSession session = request.getSession();
         if(login != null){
             Users a = d.checkLogin(username, password);
+            session.setAttribute("acc", a);
             if(a == null){
                 request.getRequestDispatcher("Views/login.jsp").forward(request, response);
             }

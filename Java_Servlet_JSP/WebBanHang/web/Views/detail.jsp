@@ -35,7 +35,7 @@
         <link rel="shortcut icon" href="img/favicon.png">
     </head>
     <body>
-        <div class="page-holder bg-light">
+        <div class="page-holder">
             <!-- navbar-->
             <header class="header bg-white">
                 <div class="container px-lg-3">
@@ -47,7 +47,7 @@
                                     <!-- Link--><a class="nav-link" href="loadDB?page=index">Home</a>
                                 </li>
                                 <li class="nav-item">
-                                    <!-- Link--><a class="nav-link" href="loadDB?page=shop">Shop</a>
+                                    <!-- Link--><a class="nav-link" href="loadDB?page=shop&index=1">Shop</a>
                                 </li>
                                 <li class="nav-item">
                                     <!-- Link--><a class="nav-link active" href="loadDB?page=detail">Product detail</a>
@@ -56,7 +56,7 @@
                                     <a class="nav-link dropdown-toggle" id="pagesDropdown" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
                                     <div class="dropdown-menu mt-3 shadow-sm" aria-labelledby="pagesDropdown">
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=index">Homepage</a>
-                                        <a class="dropdown-item border-0 transition-link" href="loadDB?page=shop">Category</a>
+                                        <a class="dropdown-item border-0 transition-link" href="loadDB?page=shop&index=1">Category</a>
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=detail">Product detail</a>
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=cart">Shopping cart</a>
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=checkout">Checkout</a>
@@ -70,11 +70,11 @@
                                         <small class="text-gray fw-normal">(2)</small></a>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" id="pagesDropdown" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
+                                    <a class="nav-link dropdown-toggle" id="pagesDropdown" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${acc==null?"Account":acc.username}</a>
                                     <div class="dropdown-menu mt-3 shadow-sm" aria-labelledby="pagesDropdown">
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=login">Login/Sign Up</a>
-                                        <a class="dropdown-item border-0 transition-link" href="loadDB?page=login">Logout</a>
-                                        <a class="dropdown-item border-0 transition-link" href="loadDB?page=login">Account detail</a>
+                                        <a class="dropdown-item border-0 transition-link" href="logout?action=logout">Logout</a>
+                                        <a class="dropdown-item border-0 transition-link" href="loadDB?page=myAccount">Account detail</a>
                                     </div>
                             </ul>
                         </div>
@@ -90,9 +90,9 @@
                                 <div class="col-sm-10 order-1 order-sm-2">
                                     <div class="swiper product-slider">
                                         <div class="swiper-wrapper">
-                                            <div class="swiper-slide h-auto">
-                                                <a class="glightbox product-view" href="img/product-detail-1.jpg" data-gallery="gallery2" data-glightbox="Product item 1">
-                                                    <img class="img-fluid" src="img/product-detail-1.jpg" alt="...">
+                                            <div class="swiper-slide h-auto" style="text-align: center">
+                                                <a class="glightbox product-view" href="${product.img}" data-gallery="gallery2" data-glightbox="Product item 1">
+                                                    <img class="img-fluid" src="${product.img}" alt="...">
                                                 </a>
                                             </div>
                                         </div>
@@ -122,7 +122,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-3 pl-sm-0"><a class="btn btn-dark btn-sm btn-block h-100 d-flex align-items-center justify-content-center px-0" href="cart.html">Add to cart</a></div>
+                                <div class="col-sm-3 pl-sm-0"><a class="btn btn-dark btn-sm btn-block h-100 d-flex align-items-center justify-content-center px-0" href="loadDB?page=cart">Add to cart</a></div>
                             </div><a class="text-dark p-0 mb-4 d-inline-block" href="#!"><i class="far fa-heart me-2"></i>Add to wish list</a><br>
                             <ul class="list-unstyled small d-inline-block">
                                 <li class="px-3 py-2 mb-1 bg-white"><strong class="text-uppercase">SKU:</strong><span class="ms-2 text-muted">${product.id}</span></li>
@@ -195,9 +195,9 @@
                         <c:forEach items="${dao.p}" var="pro">
                             <c:if test="${pro.cateId==product.cateId&&count<=4}">
                                 <c:set value="${count+1}" var="count"></c:set>
-                                <div class="col-lg-3 col-sm-6">
-                                    <div class="product text-center skel-loader">
-                                        <div class="d-block mb-3 position-relative"><a class="d-block" href="loadDB?page=detail&pid=${pro.id}"><img class="img-fluid w-100" src="${pro.img}" alt="..."></a>
+                                    <div class="col-lg-3 col-sm-6">
+                                        <div class="product text-center skel-loader">
+                                            <div class="d-block mb-3 position-relative"><a class="d-block" href="loadDB?page=detail&pid=${pro.id}"><img class="img-fluid w-100" src="${pro.img}" alt="..."></a>
                                             <div class="product-overlay">
                                                 <ul class="mb-0 list-inline">
                                                     <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-dark" href="loadDB?page=cart">Add to cart</a></li>

@@ -69,11 +69,11 @@
                         <small class="text-gray fw-normal">(2)</small></a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="pagesDropdown" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
+                    <a class="nav-link dropdown-toggle" id="pagesDropdown" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${acc==null?"Account":acc.username}</a>
                   <div class="dropdown-menu mt-3 shadow-sm" aria-labelledby="pagesDropdown">
                       <a class="dropdown-item border-0 transition-link" href="loadDB?page=login">Login/Sign Up</a>
-                      <a class="dropdown-item border-0 transition-link" href="loadDB?page=login">Logout</a>
-                      <a class="dropdown-item border-0 transition-link" href="loadDB?page=login">Account detail</a>
+                      <a class="dropdown-item border-0 transition-link" href="logout?action=logout">Logout</a>
+                      <a class="dropdown-item border-0 transition-link" href="loadDB?page=myAccount">Account detail</a>
                   </div>
               </ul>
             </div>
@@ -123,14 +123,14 @@
                 <div class="col-xl-3 col-lg-4 col-sm-6">
               <div class="product text-center">
                 <div class="position-relative mb-3">
-                  <div class="badge text-white bg-"></div><a class="d-block" href="loadDB?page=detail"><img style="border: 2px solid black" class="img-fluid w-100" src="${pro.img}" alt="product_img"></a>
+                  <div class="badge text-white bg-"></div><a class="d-block" href="loadDB?page=detail&pid=${pro.id}"><img style="border: 2px solid black" class="img-fluid w-100" src="${pro.img}" alt="product_img"></a>
                   <div class="product-overlay">
                     <ul class="mb-0 list-inline">
                       <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-dark" href="loadDB?page=cart">Add to cart</a></li>                      
                     </ul>
                   </div>
                 </div>
-                  <h6 style="height: 40px"> <a class="reset-anchor" href="loadDB?page=detail">${pro.name}</a></h6>
+                  <h6 style="height: 40px"> <a class="reset-anchor" href="loadDB?page=detail&pid=${pro.id}">${pro.name}</a></h6>
                 <p class="small text-muted">${pro.convertPrice()}</p>
               </div>
             </div>

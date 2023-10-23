@@ -15,6 +15,7 @@
     </head>
 
     <body>
+
         <div id="form">
             <div class="container">
                 <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-md-8 col-md-offset-2">
@@ -53,6 +54,15 @@
                                         <span class="eye">
                                             <i class="glyphicon glyphicon-eye-open" id="hide1" style="display: none" onclick="myFunction()"></i>
                                             <i class="glyphicon glyphicon-eye-close" id="hide2" style="display: block" onclick="myFunction()"></i>
+                                        </span>
+                                        <p class="help-block text-danger"></p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Re-Password<span class="req">*</span> </label>
+                                        <input type="password" name="password" class="form-control" id="password2" required data-validation-required-message="Please enter your password" autocomplete="off">
+                                        <span class="eye">
+                                            <i class="glyphicon glyphicon-eye-open" id="hide3" style="display: none" onclick="myFunction()"></i>
+                                            <i class="glyphicon glyphicon-eye-close" id="hide4" style="display: block" onclick="myFunction()"></i>
                                         </span>
                                         <p class="help-block text-danger"></p>
                                     </div>
@@ -115,6 +125,9 @@
                                                     var a = document.getElementById("password1");
                                                     var b = document.getElementById("hide1.1");
                                                     var c = document.getElementById("hide2.1");
+                                                    var m = document.getElementById("password2");
+                                                    var n = document.getElementById("hide3");
+                                                    var p = document.getElementById("hide4");
                                                     if (x.type === 'password') {
                                                         x.type = "text";
                                                         y.style.display = "block";
@@ -132,6 +145,15 @@
                                                         a.type = "password";
                                                         b.style.display = "none";
                                                         c.style.display = "block";
+                                                    }
+                                                    if (m.type === 'password') {
+                                                        m.type = "text";
+                                                        n.style.display = "block";
+                                                        p.style.display = "none";
+                                                    } else {
+                                                        m.type = "password";
+                                                        n.style.display = "none";
+                                                        p.style.display = "block";
                                                     }
                                                 }
         </script>

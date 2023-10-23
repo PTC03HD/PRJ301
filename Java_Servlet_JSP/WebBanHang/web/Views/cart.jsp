@@ -45,7 +45,7 @@
                                     <!-- Link--><a class="nav-link" href="loadDB?page=index">Home</a>
                                 </li>
                                 <li class="nav-item">
-                                    <!-- Link--><a class="nav-link" href="loadDB?page=shop">Shop</a>
+                                    <!-- Link--><a class="nav-link" href="loadDB?page=shop&index=1">Shop</a>
                                 </li>
                                 <li class="nav-item">
                                     <!-- Link--><a class="nav-link" href="loadDB?page=detail">Product detail</a>
@@ -54,7 +54,7 @@
                                     <a class="nav-link dropdown-toggle" id="pagesDropdown" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
                                     <div class="dropdown-menu mt-3 shadow-sm" aria-labelledby="pagesDropdown">
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=index">Homepage</a>
-                                        <a class="dropdown-item border-0 transition-link" href="loadDB?page=shop">Category</a>
+                                        <a class="dropdown-item border-0 transition-link" href="loadDB?page=shop&index=1">Category</a>
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=detail">Product detail</a>
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=cart">Shopping cart</a>
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=checkout">Checkout</a>
@@ -68,11 +68,11 @@
                                         <small class="text-gray fw-normal">(2)</small></a>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" id="pagesDropdown" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account</a>
+                                    <a class="nav-link dropdown-toggle" id="pagesDropdown" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${acc==null?"Account":acc.username}</a>
                                     <div class="dropdown-menu mt-3 shadow-sm" aria-labelledby="pagesDropdown">
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=login">Login/Sign Up</a>
-                                        <a class="dropdown-item border-0 transition-link" href="loadDB?page=login">Logout</a>
-                                        <a class="dropdown-item border-0 transition-link" href="loadDB?page=login">Account detail</a>
+                                        <a class="dropdown-item border-0 transition-link" href="logout?action=logout">Logout</a>
+                                        <a class="dropdown-item border-0 transition-link" href="loadDB?page=myAccount">Account detail</a>
                                     </div>
                             </ul>
                         </div>
@@ -109,7 +109,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-5"><a class="btn btn-dark btn-sm w-100 h-100 d-flex align-items-center justify-content-center px-0" href="cart.html">Add to cart</a></div>
+                                            <div class="col-sm-5"><a class="btn btn-dark btn-sm w-100 h-100 d-flex align-items-center justify-content-center px-0" href="loadDB?page=cart">Add to cart</a></div>
                                         </div><a class="btn btn-link text-dark text-decoration-none p-0" href="#!"><i class="far fa-heart me-2"></i>Add to wish list</a>
                                     </div>
                                 </div>
@@ -129,7 +129,7 @@
                             <div class="col-lg-6 text-lg-end">
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb justify-content-lg-end mb-0 px-0 bg-light">
-                                        <li class="breadcrumb-item"><a class="text-dark" href="index.html">Home</a></li>
+                                        <li class="breadcrumb-item"><a class="text-dark" href="loadDB?page=index">Home</a></li>
                                         <li class="breadcrumb-item active" aria-current="page">Cart</li>
                                     </ol>
                                 </nav>
@@ -156,8 +156,8 @@
                                     <tbody class="border-0">
                                         <tr>
                                             <th class="ps-0 py-3 border-light" scope="row">
-                                                <div class="d-flex align-items-center"><a class="reset-anchor d-block animsition-link" href="detail.html"><img src="img/product-detail-3.jpg" alt="..." width="70"/></a>
-                                                    <div class="ms-3"><strong class="h6"><a class="reset-anchor animsition-link" href="detail.html">Red digital smartwatch</a></strong></div>
+                                                <div class="d-flex align-items-center"><a class="reset-anchor d-block animsition-link" href="loadDB?page=detail"><img src="img/product-detail-3.jpg" alt="..." width="70"/></a>
+                                                    <div class="ms-3"><strong class="h6"><a class="reset-anchor animsition-link" href="loadDB?page=detail">Red digital smartwatch</a></strong></div>
                                                 </div>
                                             </th>
                                             <td class="p-3 align-middle border-light">
@@ -179,8 +179,8 @@
                                         </tr>
                                         <tr>
                                             <th class="ps-0 py-3 border-0" scope="row">
-                                                <div class="d-flex align-items-center"><a class="reset-anchor d-block animsition-link" href="detail.html"><img src="img/product-detail-2.jpg" alt="..." width="70"/></a>
-                                                    <div class="ms-3"><strong class="h6"><a class="reset-anchor animsition-link" href="detail.html">Apple watch</a></strong></div>
+                                                <div class="d-flex align-items-center"><a class="reset-anchor d-block animsition-link" href="loadDB?page=detail"><img src="img/product-detail-2.jpg" alt="..." width="70"/></a>
+                                                    <div class="ms-3"><strong class="h6"><a class="reset-anchor animsition-link" href="loadDB?page=detail">Apple watch</a></strong></div>
                                                 </div>
                                             </th>
                                             <td class="p-3 align-middle border-0">
@@ -206,8 +206,8 @@
                             <!-- CART NAV-->
                             <div class="bg-light px-4 py-3">
                                 <div class="row align-items-center text-center">
-                                    <div class="col-md-6 mb-3 mb-md-0 text-md-start"><a class="btn btn-link p-0 text-dark btn-sm" href="shop.html"><i class="fas fa-long-arrow-alt-left me-2"> </i>Continue shopping</a></div>
-                                    <div class="col-md-6 text-md-end"><a class="btn btn-outline-dark btn-sm" href="checkout.html">Procceed to checkout<i class="fas fa-long-arrow-alt-right ms-2"></i></a></div>
+                                    <div class="col-md-6 mb-3 mb-md-0 text-md-start"><a class="btn btn-link p-0 text-dark btn-sm" href="loadDB?page=shop"><i class="fas fa-long-arrow-alt-left me-2"> </i>Continue shopping</a></div>
+                                    <div class="col-md-6 text-md-end"><a class="btn btn-outline-dark btn-sm" href="loadDB?page=checkout">Procceed to checkout<i class="fas fa-long-arrow-alt-right ms-2"></i></a></div>
                                 </div>
                             </div>
                         </div>
