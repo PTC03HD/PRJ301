@@ -126,11 +126,11 @@
                             </div><a class="text-dark p-0 mb-4 d-inline-block" href="#!"><i class="far fa-heart me-2"></i>Add to wish list</a><br>
                             <ul class="list-unstyled small d-inline-block">
                                 <li class="px-3 py-2 mb-1 bg-white"><strong class="text-uppercase">SKU:</strong><span class="ms-2 text-muted">${product.id}</span></li>
-                                <c:forEach items="${dao.c}" var="cate">
-                                    <c:if test="${cate.id == product.cateId}">
-                                        <c:set value="${cate.name}" var="cateName"></c:set>
-                                    </c:if>
-                                </c:forEach>
+                                    <c:forEach items="${dao.c}" var="cate">
+                                        <c:if test="${cate.id == product.cateId}">
+                                            <c:set value="${cate.name}" var="cateName"></c:set>
+                                        </c:if>
+                                    </c:forEach>
                                 <li class="px-3 py-2 mb-1 bg-white text-muted"><strong class="text-uppercase text-dark">Category:</strong><a class="reset-anchor ms-2" href="#!">${cateName}</a></li>
                                 <li class="px-3 py-2 mb-1 bg-white text-muted"><strong class="text-uppercase text-dark">Tags:</strong><a class="reset-anchor ms-2" href="#!">Innovation</a></li>
                             </ul>
@@ -191,69 +191,25 @@
                     <h2 class="h5 text-uppercase mb-4">Related products</h2>
                     <div class="row">
                         <!-- PRODUCT-->
-                        <div class="col-lg-3 col-sm-6">
-                            <div class="product text-center skel-loader">
-                                <div class="d-block mb-3 position-relative"><a class="d-block" href="detail.html"><img class="img-fluid w-100" src="img/product-1.jpg" alt="..."></a>
-                                    <div class="product-overlay">
-                                        <ul class="mb-0 list-inline">
-                                            <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-outline-dark" href="#!"><i class="far fa-heart"></i></a></li>
-                                            <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-dark" href="#!">Add to cart</a></li>
-                                            <li class="list-inline-item mr-0"><a class="btn btn-sm btn-outline-dark" href="#productView" data-bs-toggle="modal"><i class="fas fa-expand"></i></a></li>
-                                        </ul>
+                        <c:set value="1" var="count"></c:set>
+                        <c:forEach items="${dao.p}" var="pro">
+                            <c:if test="${pro.cateId==product.cateId&&count<=4}">
+                                <c:set value="${count+1}" var="count"></c:set>
+                                <div class="col-lg-3 col-sm-6">
+                                    <div class="product text-center skel-loader">
+                                        <div class="d-block mb-3 position-relative"><a class="d-block" href="loadDB?page=detail&pid=${pro.id}"><img class="img-fluid w-100" src="${pro.img}" alt="..."></a>
+                                            <div class="product-overlay">
+                                                <ul class="mb-0 list-inline">
+                                                    <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-dark" href="loadDB?page=cart">Add to cart</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <h6> <a class="reset-anchor" href="loadDB?page=detail&pid=${pro.id}">${pro.name}</a></h6>
+                                        <p class="small text-muted">${pro.convertPrice()}</p>
                                     </div>
                                 </div>
-                                <h6> <a class="reset-anchor" href="detail.html">Kui Ye Chen’s AirPods</a></h6>
-                                <p class="small text-muted">$250</p>
-                            </div>
-                        </div>
-                        <!-- PRODUCT-->
-                        <div class="col-lg-3 col-sm-6">
-                            <div class="product text-center skel-loader">
-                                <div class="d-block mb-3 position-relative"><a class="d-block" href="detail.html"><img class="img-fluid w-100" src="img/product-2.jpg" alt="..."></a>
-                                    <div class="product-overlay">
-                                        <ul class="mb-0 list-inline">
-                                            <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-outline-dark" href="#!"><i class="far fa-heart"></i></a></li>
-                                            <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-dark" href="#!">Add to cart</a></li>
-                                            <li class="list-inline-item mr-0"><a class="btn btn-sm btn-outline-dark" href="#productView" data-bs-toggle="modal"><i class="fas fa-expand"></i></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <h6> <a class="reset-anchor" href="detail.html">Air Jordan 12 gym red</a></h6>
-                                <p class="small text-muted">$300</p>
-                            </div>
-                        </div>
-                        <!-- PRODUCT-->
-                        <div class="col-lg-3 col-sm-6">
-                            <div class="product text-center skel-loader">
-                                <div class="d-block mb-3 position-relative"><a class="d-block" href="detail.html"><img class="img-fluid w-100" src="img/product-3.jpg" alt="..."></a>
-                                    <div class="product-overlay">
-                                        <ul class="mb-0 list-inline">
-                                            <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-outline-dark" href="#!"><i class="far fa-heart"></i></a></li>
-                                            <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-dark" href="#!">Add to cart</a></li>
-                                            <li class="list-inline-item mr-0"><a class="btn btn-sm btn-outline-dark" href="#productView" data-bs-toggle="modal"><i class="fas fa-expand"></i></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <h6> <a class="reset-anchor" href="detail.html">Cyan cotton t-shirt</a></h6>
-                                <p class="small text-muted">$25</p>
-                            </div>
-                        </div>
-                        <!-- PRODUCT-->
-                        <div class="col-lg-3 col-sm-6">
-                            <div class="product text-center skel-loader">
-                                <div class="d-block mb-3 position-relative"><a class="d-block" href="detail.html"><img class="img-fluid w-100" src="img/product-4.jpg" alt="..."></a>
-                                    <div class="product-overlay">
-                                        <ul class="mb-0 list-inline">
-                                            <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-outline-dark" href="#!"><i class="far fa-heart"></i></a></li>
-                                            <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-dark" href="#!">Add to cart</a></li>
-                                            <li class="list-inline-item mr-0"><a class="btn btn-sm btn-outline-dark" href="#productView" data-bs-toggle="modal"><i class="fas fa-expand"></i></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <h6> <a class="reset-anchor" href="detail.html">Timex Unisex Originals</a></h6>
-                                <p class="small text-muted">$351</p>
-                            </div>
-                        </div>
+                            </c:if>
+                        </c:forEach>
                     </div>
                 </div>
             </section>
@@ -309,20 +265,20 @@
             <script src="vendor/choices.js/public/assets/scripts/choices.min.js"></script>
             <script src="js/front.js"></script>
             <script>
-                function increaseValue() {
-                    var value = parseInt(document.getElementById('number').value, 10);
-                    value = isNaN(value) ? 0 : value;
-                    value++;
-                    document.getElementById('number').value = value;
-                }
+                                                function increaseValue() {
+                                                    var value = parseInt(document.getElementById('number').value, 10);
+                                                    value = isNaN(value) ? 0 : value;
+                                                    value++;
+                                                    document.getElementById('number').value = value;
+                                                }
 
-                function decreaseValue() {
-                    var value = parseInt(document.getElementById('number').value, 10);
-                    value = isNaN(value) ? 0 : value;
-                    value < 1 ? value = 1 : '';
-                    value--;
-                    document.getElementById('number').value = value;
-                }
+                                                function decreaseValue() {
+                                                    var value = parseInt(document.getElementById('number').value, 10);
+                                                    value = isNaN(value) ? 0 : value;
+                                                    value < 1 ? value = 1 : '';
+                                                    value--;
+                                                    document.getElementById('number').value = value;
+                                                }
             </script>
             <script>
                 // ------------------------------------------------------- //

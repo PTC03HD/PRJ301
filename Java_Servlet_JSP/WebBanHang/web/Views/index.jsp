@@ -46,7 +46,7 @@
                   <!-- Link--><a class="nav-link active" href="loadDB?page=index">Home</a>
                 </li>
                 <li class="nav-item">
-                  <!-- Link--><a class="nav-link" href="loadDB?page=shop">Shop</a>
+                  <!-- Link--><a class="nav-link" href="loadDB?page=shop&index=1">Shop</a>
                 </li>
                 <li class="nav-item">
                   <!-- Link--><a class="nav-link" href="loadDB?page=detail">Product detail</a>
@@ -55,7 +55,7 @@
                     <a class="nav-link dropdown-toggle" id="pagesDropdown" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
                   <div class="dropdown-menu mt-3 shadow-sm" aria-labelledby="pagesDropdown">
                       <a class="dropdown-item border-0 transition-link" href="loadDB?page=index">Homepage</a>
-                      <a class="dropdown-item border-0 transition-link" href="loadDB?page=shop">Category</a>
+                      <a class="dropdown-item border-0 transition-link" href="loadDB?page=shop&index=1">Category</a>
                       <a class="dropdown-item border-0 transition-link" href="loadDB?page=detail">Product detail</a>
                       <a class="dropdown-item border-0 transition-link" href="loadDB?page=cart">Shopping cart</a>
                       <a class="dropdown-item border-0 transition-link" href="loadDB?page=checkout">Checkout</a>
@@ -100,14 +100,14 @@
           </header>
           <div class="row">
             <div class="col-md-4">
-                <a class="category-item" href="loadDB?page=shop"><img class="img-fluid" src="img/cate-phone (1).jpg" alt=""/><strong class="category-item-title">Smartphone</strong></a>
+                <a class="category-item" href="loadDB?page=shop&index=1"><img class="img-fluid" src="img/cate-phone (1).jpg" alt=""/><strong class="category-item-title">Smartphone</strong></a>
             </div>
             <div class="col-md-4">
-                <a class="category-item mb-4" href="loadDB?page=shop"><img class="img-fluid" src="img/cate-camera (1).png" alt=""/><strong class="category-item-title">Camera</strong></a>
-                <a class="category-item" href="loadDB?page=shop"><img class="img-fluid" src="img/cate-laptop (1).jpg" alt=""/><strong class="category-item-title">Laptop</strong></a>
+                <a class="category-item mb-4" href="loadDB?page=shop&index=1"><img class="img-fluid" src="img/cate-camera (1).png" alt=""/><strong class="category-item-title">Camera</strong></a>
+                <a class="category-item" href="loadDB?page=shop&index=1"><img class="img-fluid" src="img/cate-laptop (1).jpg" alt=""/><strong class="category-item-title">Laptop</strong></a>
             </div>
             <div class="col-md-4">
-                <a class="category-item" href="loadDB?page=shop"><img class="img-fluid" src="img/cat-img-4.jpg" alt=""/><strong class="category-item-title">Accessory</strong></a>
+                <a class="category-item" href="loadDB?page=shop&index=1"><img class="img-fluid" src="img/cat-img-4.jpg" alt=""/><strong class="category-item-title">Accessory</strong></a>
             </div>
           </div>
         </section>
