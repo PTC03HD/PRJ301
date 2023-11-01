@@ -67,6 +67,7 @@ public class loadDB extends HttpServlet {
         String pid = request.getParameter("pid");
         String action = request.getParameter("action");
         request.setAttribute("pid", pid);
+        request.setAttribute("page", page);
         HttpSession session = request.getSession();
         Users acc = (Users)session.getAttribute("acc");
         if(pid!=null){
@@ -80,7 +81,7 @@ public class loadDB extends HttpServlet {
             request.setAttribute("acc", acc);
         }
         if(page!=null){
-            if(page.equals("shop")){
+            if(page.equals("shop")||page.equals("dashboard")){
                 request.getRequestDispatcher("paging").forward(request, response);
             }
             request.getRequestDispatcher("Views/"+page+".jsp").forward(request, response);
@@ -88,8 +89,8 @@ public class loadDB extends HttpServlet {
         if(action!=null&&action.equals("logout")){
             request.getRequestDispatcher("LogoutControl.java").forward(request, response);
         }
-        request.getRequestDispatcher("Views/myAccount.jsp").forward(request, response);
-    } 
+        request.getRequestDispatcher("Views/index.jsp").forward(request, response);
+    }
     
     /** 
      * Handles the HTTP <code>POST</code> method.

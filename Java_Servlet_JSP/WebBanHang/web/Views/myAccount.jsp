@@ -136,10 +136,6 @@
                                                     <form action="user?action=updateinfo" method="POST">
                                                         <label>Tên người dùng</label>
                                                         <input type="text" name="user_name" value="${sessionScope.acc.username}">
-                                                        <label>Email</label>
-                                                        <input type="text" readonly name="user_email" value="${sessionScope.acc.userEmail}">
-                                                        <label>Phone Number</label>
-                                                        <input type="text" readonly name="user_phoneNum" value="${sessionScope.acc.phoneNum}">
                                                         <label>Password</label>
                                                         <input type="password" name="user_pass" value="${sessionScope.acc.userPass}">
                                                         <div class="cart_submit">

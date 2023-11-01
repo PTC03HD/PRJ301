@@ -16,6 +16,10 @@
         <servlet-name>LogoutControl</servlet-name>
         <servlet-class>controllers.LogoutControl</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CRUDControl</servlet-name>
+        <servlet-class>controllers.CRUDControl</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>loadDB</servlet-name>
         <url-pattern>/loadDB</url-pattern>
@@ -31,6 +35,22 @@
     <servlet-mapping>
         <servlet-name>LogoutControl</servlet-name>
         <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CRUDControl</servlet-name>
+        <url-pattern>/CRUD</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CRUDControl</servlet-name>
+        <url-pattern>/add</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CRUDControl</servlet-name>
+        <url-pattern>/del</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CRUDControl</servlet-name>
+        <url-pattern>/update</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

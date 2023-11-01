@@ -11,14 +11,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import models.Product;
 
 /**
  *
  * @author phamt
  */
-public class PagingControl extends HttpServlet {
+public class CRUDControl extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,10 +41,10 @@ public class PagingControl extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet PagingControl</title>");
+            out.println("<title>Servlet CRUDControl</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet PagingControl at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CRUDControl at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -64,48 +62,32 @@ public class PagingControl extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         d.loadDB();
-        request.setAttribute("dao", d);
-        String page = request.getParameter("page");
-        int count = d.getTotalProduct();
-        int endPage = count % 6 == 0 ? count / 6 : (count / 6) + 1;
-        String index = request.getParameter("index");
-        request.setAttribute("index", index);
-        //price value
-        String minValue = request.getParameter("minValue");
-        String maxValue = request.getParameter("maxValue");
-        minValue = minValue==null?d.getMinPrice():minValue.substring(0, minValue.length()-1);
-        maxValue = maxValue==null?d.getMaxPrice():maxValue.substring(0, maxValue.length()-1);
-        request.setAttribute("minPrice", d.getMinPrice()); 
-        request.setAttribute("maxPrice", d.getMaxPrice()); 
-        request.setAttribute("min", minValue==null?d.getMinPrice():minValue);
-        request.setAttribute("max", maxValue==null?d.getMaxPrice():maxValue);
-        //search value
-        String txtSearch = request.getParameter("txt");
-        txtSearch = txtSearch == null ? "" : txtSearch;
-        request.setAttribute("txt", txtSearch);
-        //category value
-        String cate[] = request.getParameterValues("cateF");
-        request.setAttribute("cateFilter", cate);
-        String cateUrl="";
-        if(cate!=null){
-            for (String id : cate) {
-                cateUrl+="&cateF="+id;
-            }
-            request.setAttribute("cateUrl", cateUrl);
-        }
-        try {
-            if (index != null) {
-                d.pagingProduct(Integer.parseInt(request.getParameter("index")), 6, txtSearch
-                        , cate, minValue, maxValue);
+        String o1 = request.getParameter("type");
+        Object pid = request.getParameter("pid");
+        String i = request.getParameter("index");
+        if (o1 != null) {
+            request.setAttribute("op1", o1.equals("1"));
+            request.setAttribute("op2", o1.equals("0"));
+            if ((o1 + "").equals("0")) {
+                //update
+                if (pid != null) {
+                    request.setAttribute("editId", pid + "");
+                } else {
+                    request.removeAttribute("editId");
+                }
+            } else if ((o1 + "").equals("1")) {
+                if (pid!=null) {
+                    request.setAttribute("deleteId", pid);
+                } else {
+                    request.removeAttribute("deleteId");
+                }
             } else {
-                d.pagingProduct(1, 6, txtSearch, cate, minValue, maxValue);
             }
-        } catch (Exception e) {
         }
-        request.setAttribute("endP", endPage);
-        request.getRequestDispatcher("Views/" + page + ".jsp").forward(request, response);
-//        processRequest(request, response);
+        String page = "paging?page=dashboard&index="+(i==null?"1":i);
+        request.getRequestDispatcher(page).forward(request, response);
     }
 
     /**
@@ -119,6 +101,33 @@ public class PagingControl extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String btn1 = request.getParameter("btnInsert");
+        String btn2 = request.getParameter("btnEdit");
+        request.setAttribute("btn2", btn2);
+        String name = request.getParameter("proName");
+        String id = request.getParameter("proId");
+        String img = request.getParameter("proImage");
+        String desc = request.getParameter("proDesc");
+        String price = request.getParameter("proPrice");
+        String quantity = request.getParameter("proQuantity");
+        String discount = request.getParameter("proDis");
+        String hot = request.getParameter("proHot");
+        String cateId = request.getParameter("category");
+        
+        request.setAttribute("name", name);
+        if(btn1 !=null){
+            d.InsertProduct(cateId, name, price, desc, quantity, img, discount, hot, "1");
+        }
+        
+        String deleteId = request.getParameter("delId");
+        Object btnDelete = request.getParameter("btnDelete");
+        if(btnDelete!=null&&deleteId!=null){
+            d.deleteProduct(Integer.parseInt(deleteId));
+        }
+        
+        if(btn2!=null){
+            d.Update(id, cateId, name, price, desc, quantity, img, discount, hot, "1");
+        }
         doGet(request, response);
     }
 
@@ -131,5 +140,4 @@ public class PagingControl extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }

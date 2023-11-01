@@ -4,19 +4,23 @@
  */
 package DAL;
 
+import controllers.*;
 import java.sql.*;
+import java.text.NumberFormat;
 import java.util.*;
 import models.*;
 
 public class DAO {
+
     private Connection con;
     private String status = "OK";
     private List<Product> p;
     private List<Category> c;
     private List<Users> u;
     private List<Product> pagingPro;
+    public static DAO INSTANCE = new DAO();
 
-    public DAO(){
+    public DAO() {
         try {
             con = new DBContext().getConnection();
         } catch (Exception e) {
@@ -71,140 +75,257 @@ public class DAO {
     public void setPagingPro(List<Product> pagingPro) {
         this.pagingPro = pagingPro;
     }
-    
-    
-    
+
     public void loadDB() {
-        String sql = "select * from Product";
+        String sql = "select * from Product_HE172007";
         p = new Vector<>();
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 p.add(new Product(
-                        rs.getString(1), 
-                        rs.getInt(2), 
-                        rs.getString(3), 
-                        rs.getInt(4), 
-                        rs.getString(5), 
-                        rs.getInt(6), 
-                        rs.getString(7), 
+                        rs.getString(1),
+                        rs.getInt(2),
+                        rs.getString(3),
+                        rs.getInt(4),
+                        rs.getString(5),
+                        rs.getInt(6),
+                        rs.getString(7),
                         rs.getString(8),
                         rs.getInt(9)));
             }
         } catch (Exception e) {
             status = "Error at load Product: " + e.getMessage();
         }
-        
-        sql = "select * from category";
+
+        sql = "select * from category_HE172007";
         c = new Vector<>();
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 c.add(new Category(rs.getInt(1), rs.getString(2)));
             }
         } catch (Exception e) {
-            status = "Error at load Category: "+e.getMessage();
+            status = "Error at load Category: " + e.getMessage();
         }
-        
-        sql = "select * from users";
+
+        sql = "select * from users_HE172007";
         u = new Vector<>();
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
-                u.add(new Users(rs.getString(2), 
+            while (rs.next()) {
+                u.add(new Users(rs.getString(2),
                         rs.getString(3),
-                        rs.getString(4),
-                        rs.getBoolean(5),
-                        rs.getString(6)));
+                        rs.getBoolean(4)));
             }
         } catch (Exception e) {
-            status = "Error at load Category: "+e.getMessage();
+            status = "Error at load Category: " + e.getMessage();
         }
     }
-    
-    public void signup(String username, String email, String password, int isAdmin, String phoneNum){
-        String sql = "INSERT INTO users ([user_name], user_email, user_pass, isAdmin, phoneNum) VALUES(?,?,?,?,?)";
+
+    public void signup(String username, String password, int isAdmin) {
+        String sql = "INSERT INTO users_HE172007 ([user_name], user_pass, isAdmin) VALUES(?,?,?)";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, username);
-            ps.setString(2, email);
-            ps.setString(3, password);
-            if(isAdmin==1){
-                ps.setInt(4, 0);
-            }else{
-                ps.setNull(4, java.sql.Types.INTEGER);
-            }
-            ps.setString(5, phoneNum);
+            ps.setString(2, password);
+            ps.setInt(3, isAdmin);
             ps.execute();
         } catch (Exception e) {
-            status = "Error at insert user: "+e.getMessage();
+            status = "Error at insert user: " + e.getMessage();
         }
     }
-    
-    public boolean checkUserExist(String username, String email, String phoneNum){
+
+    public boolean checkUserExist(String username) {
         for (Users user : u) {
-            if(user.getUsername().equals(username)||
-                    user.getUserEmail().equals(email)||
-                    user.getPhoneNum().equals(phoneNum)){
+            if (user.getUsername().equals(username)) {
                 return true;
             }
         }
         return false;
     }
-    
-    public Users checkLogin(String username, String password){
+
+    public Users checkLogin(String username, String password) {
         for (Users user : u) {
-            if(user.getUsername().equals(username) && user.getUserPass().equals(password)){
+            if (user.getUsername().equals(username) && user.getUserPass().equals(password)) {
                 return user;
             }
         }
         return null;
     }
-    
-    public int getTotalProduct(){
-        String sql = "select count(*) from Product";
+
+    public int getTotalProduct() {
+        String sql = "select count(*) from Product_HE172007";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 return rs.getInt(1);
             }
         } catch (Exception e) {
-            status = "Error at check total account: "+e.getMessage();
+            status = "Error at check total account: " + e.getMessage();
         }
         return 0;
     }
     
-    public void pagingProduct(int index, int nrpp){
+    public void pagingProduct(int index, int nrpp, String txtSearch, String cate[],
+             String minPrice, String maxPrice) {
         pagingPro = new Vector<>();
-        String sql = "select * from Product order by category_id offset ? row fetch next ? rows only";
+        String sql = "select * from Product_HE172007 ";
+        if (cate != null) {
+            for (int i = 0; i < cate.length; i++) {
+                if (cate[i] != null) {
+                    sql += (i == 0) ? "where (category_id=? or " : "category_id=? or ";
+                }
+                sql += (i == cate.length - 1) ? "1!=1)" : "";
+            }
+            sql += " and product_name like ? and (product_price between ? and ?) ";
+        } else {
+            sql += "where product_name like ? and (product_price between ? and ?) ";
+        }
+        sql += "order by product_name offset ? rows fetch next ? rows only";
+
         try {
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, (index-1)*nrpp);
-            ps.setInt(2, nrpp);
+            if (cate != null && cate.length > 0) {
+                for (int i = 0; i < cate.length; i++) {
+                    if (cate[i] != null) {
+                        ps.setString(i + 1, cate[i]);
+                    }
+                }
+                ps.setString(cate.length + 1, "%" + txtSearch + "%");
+                ps.setString(cate.length + 2, minPrice);
+                ps.setString(cate.length + 3, maxPrice);
+                ps.setInt(cate.length + 4, (index - 1) * nrpp);
+                ps.setInt(cate.length + 5, nrpp);
+            } else {
+                ps.setString(1, "%" + txtSearch + "%");
+                ps.setString(2, minPrice);
+                ps.setString(3, maxPrice);
+                ps.setInt(4, (index - 1) * nrpp);
+                ps.setInt(5, nrpp);
+            }
+
             ResultSet rs = ps.executeQuery();
-                        while(rs.next()){
+            while (rs.next()) {
                 pagingPro.add(new Product(
-                        rs.getString(1), 
+                        rs.getString(1),
                         rs.getInt(2),
-                        rs.getString(3), 
-                        rs.getInt(4), 
-                        rs.getString(5), 
-                        rs.getInt(6), 
-                        rs.getString(7), 
+                        rs.getString(3),
+                        rs.getInt(4),
+                        rs.getString(5),
+                        rs.getInt(6),
+                        rs.getString(7),
                         rs.getString(8),
                         rs.getInt(9)));
             }
         } catch (Exception e) {
-            status = "Error at paging Product: "+e.getMessage();
+            status = "Error at paging Product: " + e.getMessage();
         }
     }
-    
+
+    public void InsertProduct(String cateId, String name, String price,
+            String desc, String quantity, String img, String discount, String hot, String createBy) {
+        String sql = "INSERT INTO product_HE172007(category_id,product_name,"
+                + "product_price,product_describe,quantity,img,discount,hot,createBy)"
+                + " VALUES(?,?,?,?,?,?,?,?,?)";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, cateId);
+            ps.setString(2, name);
+            ps.setString(3, price);
+            ps.setString(4, desc);
+            ps.setString(5, quantity);
+            ps.setString(6, img);
+            ps.setString(7, discount);
+            ps.setString(8, hot);
+            ps.setString(9, createBy);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            status = "Error at Insert product" + e.getMessage();
+        }
+    }
+
+    public void deleteProduct(int pid) {
+        String sql = "delete from Product_HE172007 where product_id=?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, pid);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            status = "Error at delete product: " + e.getMessage();
+        }
+    }
+
+    public void Update(String id, String cateId, String name, String price,
+            String desc, String quantity, String img, String discount, String hot, String createBy) {
+        String sql = "UPDATE product_HE172007 SET [category_id] = ?,[product_name] = ?,"
+                + "[product_price] = ?,[product_describe] = ?,[quantity] = ?,[img] = ?,"
+                + "[discount] = ?,[hot] = ?,[createBy] = ? WHERE product_id=?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, cateId);
+            ps.setString(2, name);
+            ps.setString(3, price);
+            ps.setString(4, desc);
+            ps.setString(5, quantity);
+            ps.setString(6, img);
+            ps.setString(7, discount);
+            ps.setString(8, hot);
+            ps.setString(9, createBy);
+            ps.setString(10, id);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            status = "Error at Update product: " + e.getMessage();
+        }
+    }
+
+    public Product findProduct(String pid) {
+        for (Product pro : p) {
+            if (pro.getId().equals(pid)) {
+                return pro;
+            }
+        }
+        return null;
+    }
+
+    public String convertMoney(int money) {
+        NumberFormat format = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+        return format.format(money);
+    }
+
     public static void main(String[] args) {
         DAO d = new DAO();
-        
+        d.loadDB();
+    }
+
+    public String getMaxPrice() {
+        String sql = "select MAX(product_price) from product_HE172007";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return rs.getString(1);
+            }
+        } catch (Exception e) {
+            status = "Error at get Max Price: " + e.getMessage();
+        }
+        return "-1";
+    }
+
+    public String getMinPrice() {
+        String sql = "select MIN(product_price) from product_HE172007";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return rs.getString(1);
+            }
+        } catch (Exception e) {
+            status = "Error at get Min Price: " + e.getMessage();
+        }
+        return "-1";
     }
 }

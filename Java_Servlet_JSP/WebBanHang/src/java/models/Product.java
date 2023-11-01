@@ -115,5 +115,4 @@ public class Product {
         NumberFormat format = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
         return format.format(price);
     }
-    
 }

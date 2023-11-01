@@ -199,7 +199,6 @@ public class loadDB extends HttpServlet {
             index = Integer.parseInt(request.getAttribute("index")+"");
         } catch (Exception e) {
         }
-        
         Paging p = new Paging(nrpp, index, d.getStd().size());
         p.calc();
         request.setAttribute("nrppArr", nrppArr);
