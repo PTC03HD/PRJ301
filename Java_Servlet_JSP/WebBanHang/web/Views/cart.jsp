@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -45,13 +46,13 @@
                                     <!-- Link--><a class="nav-link" href="loadDB?page=index">Home</a>
                                 </li>
                                 <li class="nav-item">
-                                    <!-- Link--><a class="nav-link" href="loadDB?page=shop&index=1">Shop</a>
+                                    <!-- Link--><a class="nav-link" href="paging?page=shop&index=1">Shop</a>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" id="pagesDropdown" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
                                     <div class="dropdown-menu mt-3 shadow-sm" aria-labelledby="pagesDropdown">
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=index">Homepage</a>
-                                        <a class="dropdown-item border-0 transition-link" href="loadDB?page=shop&index=1">Category</a>
+                                        <a class="dropdown-item border-0 transition-link" href="paging?page=shop&index=1">Category</a>
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=cart">Shopping cart</a>
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=checkout">Checkout</a>
                                     </div>
@@ -64,12 +65,14 @@
                                         <small class="text-gray fw-normal">(2)</small></a>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" id="pagesDropdown" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${acc==null?"Account":acc.username}</a>
+                                    <a class="nav-link dropdown-toggle" id="pagesDropdown1" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${acc==null?"Account":acc.username}</a>
                                     <div class="dropdown-menu mt-3 shadow-sm" aria-labelledby="pagesDropdown">
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=login">Login/Sign Up</a>
                                         <a class="dropdown-item border-0 transition-link" href="logout?action=logout">Logout</a>
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=myAccount">Account detail</a>
-                                        <a class="dropdown-item border-0 transition-link" href="loadDB?page=dashboard&index=1">Dashboard</a>
+                                        <c:if test="${sessionScope.acc!=null&&sessionScope.acc.getIsAdmin()}">
+                                        <a class="dropdown-item border-0 transition-link" href="paging?page=dashboard&index=1">Dashboard</a>
+                                        </c:if>
                                     </div>
                             </ul>
                         </div>

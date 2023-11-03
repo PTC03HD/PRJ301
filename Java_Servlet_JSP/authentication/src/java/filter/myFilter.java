@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Filter.java to edit this template
  */
-package filter;
+package Filter;
 
+import Models.Users;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -17,13 +18,12 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import models.Users;
 
 /**
  *
- * @author phamt
+ * @author ADMIN
  */
-public class myFilter implements Filter {
+public class MyFilter implements Filter {
     
     private static final boolean debug = true;
 
@@ -32,13 +32,13 @@ public class myFilter implements Filter {
     // configured. 
     private FilterConfig filterConfig = null;
     
-    public myFilter() {
+    public MyFilter() {
     }    
     
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("myFilter:DoBeforeProcessing");
+            log("MyFilter:DoBeforeProcessing");
         }
 
         // Write code here to process the request and/or response before
@@ -66,7 +66,7 @@ public class myFilter implements Filter {
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
-            log("myFilter:DoAfterProcessing");
+            log("MyFilter:DoAfterProcessing");
         }
 
         // Write code here to process the request and/or response after
@@ -100,32 +100,40 @@ public class myFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
-        HttpServletRequest req = (HttpServletRequest) request;
-        HttpServletResponse res = (HttpServletResponse) response;
-        HttpSession ses = req.getSession();
-        String url = req.getRequestURI();
-        if(ses.getAttribute("user")==null){
-            if(!url.contains("Login"))
-                res.sendRedirect(req.getContextPath()+"/Login");
-            else chain.doFilter(request, response);
-        }
-        else {
-            Users u = (Users)ses.getAttribute("user");
-            if(u.getRoll()==0) chain.doFilter(request, response);
-            else{
-                if(u.getRoll() == 1){
-                    if(url.contains("admin"))
-                        res.sendRedirect(req.getContextPath()+"/member/member1");
-                    else
-                        chain.doFilter(request, response);
+            HttpServletRequest req = (HttpServletRequest)request;
+            HttpServletResponse res = (HttpServletResponse)response;
+            HttpSession ses = req.getSession();
+            //Dòng này lấy phiên làm việc (session) từ yêu cầu, cho phép truy cập 
+            //thông tin về phiên làm việc của người dùng.
+            String url = req.getRequestURI();
+            //lấy URI của yêu cầu, tức là đường dẫn mà người dùng đang cố gắng truy cập.
+            if(ses.getAttribute("user")==null) {//nếu phiên làm việc ko chứa thông tin người dùng(chưa đăng nhập)
+                if(!url.contains("Login"))  // chưa đăng nhập và truy cập trang ko phải trang login
+                        res.sendRedirect(req.getContextPath()+"/Login"); //Chuyển đến trang đăng nhập
+                else chain.doFilter(request, response); //Nếu đã đúng trang login thì tiếp tục
+            }else{ //nếu người dùng đã đăng nhập
+                Users u = (Users)ses.getAttribute("user");
+                //Tạo 1 đối tượng u được lấy từ phiên làm việc user
+                if(u.getRoll()==0) chain.doFilter(request, response);
+                //quyền truy cập = 0 thì cho phép và tiếp tục
+                else{
+                    if(u.getRoll() == 1){
+                        if(url.contains("Admin"))//Nếu quyền truy cập = 1 và đường dẫn chứa Amin
+                            res.sendRedirect(req.getContextPath()+"/Member/Member1"); //Chuyển đến trang member
+                        else
+                            chain.doFilter(request, response); //đc cho phép
+                    }
+                    else if(u.getRoll() == 2)
+                        if(url.contains("Admin")|| url.contains("Member"))
+                        //Nếu quyền truy cập là 2 và đường dẫn chứa amin hoặc member thì đưa về trang khách
+                            res.sendRedirect(req.getContextPath()+"/guest");
+                        else
+                            chain.doFilter(request, response);
                 }
-                else if(u.getRoll() == 2){
-                    if(url.contains("admin")||url.contains("member"))
-                        res.sendRedirect(req.getContextPath()+"/guest");
-                }
-            }
-        }
-    }
+            }      
+}// Role=0 là admin có quyền truy cập vào admin, member và khách
+ // Role= 1 là member có quyền truy cập vào member và khách
+ // Role= 2 là khách chỉ có thể truy cập trang khách
 
     /**
      * Return the filter configuration object for this filter.
@@ -156,7 +164,7 @@ public class myFilter implements Filter {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
             if (debug) {                
-                log("myFilter:Initializing filter");
+                log("MyFilter:Initializing filter");
             }
         }
     }
@@ -167,9 +175,9 @@ public class myFilter implements Filter {
     @Override
     public String toString() {
         if (filterConfig == null) {
-            return ("myFilter()");
+            return ("MyFilter()");
         }
-        StringBuffer sb = new StringBuffer("myFilter(");
+        StringBuffer sb = new StringBuffer("MyFilter(");
         sb.append(filterConfig);
         sb.append(")");
         return (sb.toString());

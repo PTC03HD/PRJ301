@@ -53,7 +53,6 @@
                                     <div class="dropdown-menu mt-3 shadow-sm" aria-labelledby="pagesDropdown">
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=index">Homepage</a>
                                         <a class="dropdown-item border-0 transition-link" href="paging?page=shop&index=1">Category</a>
-                                        <a class="dropdown-item border-0 transition-link" href="loadDB?page=detail">Product detail</a>
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=cart">Shopping cart</a>
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=checkout">Checkout</a>
                                     </div>
@@ -66,12 +65,14 @@
                                         <small class="text-gray fw-normal">(2)</small></a>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" id="pagesDropdown" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${acc==null?"Account":acc.username}</a>
+                                    <a class="nav-link dropdown-toggle" id="pagesDropdown1" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${acc==null?"Account":acc.username}</a>
                                     <div class="dropdown-menu mt-3 shadow-sm" aria-labelledby="pagesDropdown">
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=login">Login/Sign Up</a>
                                         <a class="dropdown-item border-0 transition-link" href="logout?action=logout">Logout</a>
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=myAccount">Account detail</a>
-                                        <a class="dropdown-item border-0 transition-link" href="loadDB?page=dashboard&index=1">Dashboard</a>
+                                        <c:if test="${sessionScope.acc!=null&&sessionScope.acc.getIsAdmin()}">
+                                            <a class="dropdown-item border-0 transition-link" href="paging?page=dashboard&index=1">Dashboard</a>
+                                        </c:if>
                                     </div>
                             </ul>
                         </div>
@@ -183,12 +184,30 @@
                                             <div class="product text-center">
                                                 <div class="mb-3 position-relative">
                                                     <div class="badge text-white bg-"></div>
-                                                    <a class="d-block" href="loadDB?page=detail&pid=${pro.id}">
-                                                        <img class="img-fluid w-100" src="${pro.img}" alt="..." style="border: 2px solid black">
-                                                    </a>
+                                                        <c:choose>
+                                                            <c:when test="${sessionScope.acc!=null&&sessionScope.acc.getIsAdmin()}">
+                                                                <div class="badge text-white bg-"></div><a class="d-block" href="update?pid=${pro.id}&type=0&index=1"><img style="border: 2px solid black" class="img-fluid w-100" src="${pro.img}" alt="product_img"></a>
+                                                            </c:when>
+                                                            <c:when test="${sessionScope.acc!=null&&!sessionScope.acc.getIsAdmin()}">
+                                                                <div class="badge text-white bg-"></div><a class="d-block" href="loadDB?page=cart"><img style="border: 2px solid black" class="img-fluid w-100" src="${pro.img}" alt="product_img"></a>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <div class="badge text-white bg-"></div><a class="d-block" href="loadDB?page=login"><img style="border: 2px solid black" class="img-fluid w-100" src="${pro.img}" alt="product_img"></a>
+                                                            </c:otherwise>
+                                                        </c:choose>
                                                     <div class="product-overlay">
                                                         <ul class="mb-0 list-inline">
-                                                            <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-dark" href="cart.html">Add to cart</a></li>
+                                                            <c:choose>
+                                                                <c:when test="${sessionScope.acc!=null&&sessionScope.acc.getIsAdmin()}">
+                                                                    <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-dark" href="update?pid=${pro.id}&type=0&index=1">Edit items</a></li>
+                                                                </c:when>
+                                                                <c:when test="${sessionScope.acc!=null&&!sessionScope.acc.getIsAdmin()}">
+                                                                    <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-dark" href="loadDB?page=cart">Add to cart</a></li>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-dark" href="loadDB?page=login">Add to cart</a></li>
+                                                                </c:otherwise>
+                                                            </c:choose>
                                                         </ul>
                                                     </div>
                                                 </div>

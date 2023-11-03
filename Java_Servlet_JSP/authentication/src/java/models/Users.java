@@ -2,32 +2,32 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package models;
+package Models;
 
 /**
  *
- * @author phamt
+ * @author ADMIN
  */
 public class Users {
-    private String user;
+    private String id;
     private String pass;
     private int roll;
 
     public Users() {
     }
 
-    public Users(String user, String pass, int roll) {
-        this.user = user;
+    public Users(String id, String pass, int roll) {
+        this.id = id;
         this.pass = pass;
         this.roll = roll;
     }
 
-    public String getUser() {
-        return user;
+    public String getId() {
+        return id;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getPass() {
@@ -45,5 +45,6 @@ public class Users {
     public void setRoll(int roll) {
         this.roll = roll;
     }
+    
     
 }

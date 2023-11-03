@@ -14,9 +14,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author phamt
+ * @author ADMIN
  */
-public class member1 extends HttpServlet {
+public class Member1 extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -33,10 +33,10 @@ public class member1 extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet member1</title>");  
+            out.println("<title>Servlet Member1</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet member1 at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet Member1 at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }

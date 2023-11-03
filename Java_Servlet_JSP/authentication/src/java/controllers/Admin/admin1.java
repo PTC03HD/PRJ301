@@ -14,9 +14,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author phamt
+ * @author ADMIN
  */
-public class admin1 extends HttpServlet {
+public class Admin1 extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -33,10 +33,10 @@ public class admin1 extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet admin1</title>");  
+            out.println("<title>Servlet Admin1</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet admin1 at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet Admin1 at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }

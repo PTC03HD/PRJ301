@@ -22,7 +22,9 @@
         <script src="js/respond.min.js"></script>
         <![endif]-->
     </head>
-    <h1>${name}</h1>
+    <c:if test="${sessionScope.acc==null||!sessionScope.acc.getIsAdmin()}">
+        <c:redirect url="/loadDB"></c:redirect>
+    </c:if>
     <body>
         <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
             <div class="container-fluid">
@@ -41,7 +43,7 @@
                     <img src="http://placehold.it/50/30a5ff/fff" class="img-responsive" alt="">
                 </div>
                 <div class="profile-usertitle">
-                    <div class="profile-usertitle-name">Username</div>
+                    <div class="profile-usertitle-name">${sessionScope.user}</div>
                     <div class="profile-usertitle-status"><span class="indicator label-success"></span>Online</div>
                 </div>
                 <div class="clear"></div>
@@ -54,7 +56,7 @@
             </form>
             <ul class="nav menu">
                 <li class="active"><a href="index.html">Dashboard</a></li>
-                <li><a href="loadDB?page=login">Logout</a></li>
+                <li><a href="logout?action=logout">Logout</a></li>
             </ul>
         </div><!--/.sidebar-->
 
