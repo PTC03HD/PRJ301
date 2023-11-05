@@ -43,7 +43,7 @@
                     <img src="http://placehold.it/50/30a5ff/fff" class="img-responsive" alt="">
                 </div>
                 <div class="profile-usertitle">
-                    <div class="profile-usertitle-name">${sessionScope.user}</div>
+                    <div class="profile-usertitle-name">${sessionScope.acc.username}</div>
                     <div class="profile-usertitle-status"><span class="indicator label-success"></span>Online</div>
                 </div>
                 <div class="clear"></div>
@@ -55,7 +55,8 @@
                 </div>
             </form>
             <ul class="nav menu">
-                <li class="active"><a href="index.html">Dashboard</a></li>
+                <li class="active"><a href="paging?page=dashboard&index=1">Products Manage</a></li>
+                <li><a href="UserControl">Users Manage</a></li>
                 <li><a href="logout?action=logout">Logout</a></li>
             </ul>
         </div><!--/.sidebar-->

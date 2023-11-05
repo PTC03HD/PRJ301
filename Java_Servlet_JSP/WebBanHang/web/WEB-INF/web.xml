@@ -23,6 +23,14 @@
         <servlet-name>CRUDControl</servlet-name>
         <servlet-class>controllers.CRUDControl</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UserControl</servlet-name>
+        <servlet-class>controllers.UserControl</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>cartControl</servlet-name>
+        <servlet-class>controllers.cartControl</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>loadDB</servlet-name>
         <url-pattern>/loadDB</url-pattern>
@@ -54,6 +62,14 @@
     <servlet-mapping>
         <servlet-name>CRUDControl</servlet-name>
         <url-pattern>/update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserControl</servlet-name>
+        <url-pattern>/UserControl</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>cartControl</servlet-name>
+        <url-pattern>/cart</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

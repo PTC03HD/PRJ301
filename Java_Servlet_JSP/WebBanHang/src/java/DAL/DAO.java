@@ -18,7 +18,8 @@ public class DAO {
     private List<Category> c;
     private List<Users> u;
     private List<Product> pagingPro;
-    public static DAO INSTANCE = new DAO();
+    private List<Bill> bill;
+    private HashMap<String, BillDetail> bill_detail;
 
     public DAO() {
         try {
@@ -116,14 +117,41 @@ public class DAO {
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                u.add(new Users(rs.getString(2),
+                u.add(new Users(rs.getInt(1), 
+                        rs.getString(2),
                         rs.getString(3),
                         rs.getBoolean(4)));
             }
         } catch (Exception e) {
             status = "Error at load Category: " + e.getMessage();
         }
-    }
+        
+        sql = "select * from bill_HE172007";
+        bill = new Vector<>();
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                bill.add(new Bill(rs.getString(1), findUser(rs.getString(2)), rs.getInt(3),
+                        rs.getString(4), rs.getString(5), rs.getDate(6), rs.getInt(7), rs.getInt(8)));
+            }
+        } catch (Exception e) {
+            status = "Error at load bill: "+e.getMessage();
+        }
+        
+        sql = "select * from bill_detail_HE172007";
+        bill_detail = new HashMap<>();
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                bill_detail.put(rs.getString(2), new BillDetail(rs.getString(2), rs.getString(2),
+                        findProduct(rs.getString(3)), rs.getInt(4), rs.getInt(5)));
+            }
+        } catch (Exception e) {
+            status = "Error at load bill_detail: "+e.getMessage();
+        }
+    } 
 
     public void signup(String username, String password, int isAdmin) {
         String sql = "INSERT INTO users_HE172007 ([user_name], user_pass, isAdmin) VALUES(?,?,?)";
@@ -327,5 +355,25 @@ public class DAO {
             status = "Error at get Min Price: " + e.getMessage();
         }
         return "-1";
+    }
+    
+    public void deleteUser(int uid) {
+        String sql = "delete from users_HE172007 where user_id=?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, uid);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            status = "Error at delete user: " + e.getMessage();
+        }
+    }
+    
+    public Users findUser(String uid) {
+        for (Users user: u) {
+            if ((user.getUid()+"").equals(uid)) {
+                return user;
+            }
+        }
+        return null;
     }
 }

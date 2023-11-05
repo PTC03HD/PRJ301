@@ -108,7 +108,6 @@ public class LoginControl extends HttpServlet {
                 d.signup(username, password, 0);
             }
         }
-
         doGet(request, response);
     }
 

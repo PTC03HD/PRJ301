@@ -9,6 +9,7 @@ package models;
  * @author phamt
  */
 public class Users {
+    private int uid;
     private String username;
     private String userPass;
     private boolean isAdmin;
@@ -16,7 +17,8 @@ public class Users {
     public Users() {
     }
 
-    public Users(String username, String userPass, boolean isAdmin) {
+    public Users(int uid, String username, String userPass, boolean isAdmin) {
+        this.uid = uid;
         this.username = username;
         this.userPass = userPass;
         this.isAdmin = isAdmin;
@@ -45,4 +47,14 @@ public class Users {
     public void setIsAdmin(boolean isAdmin) {
         this.isAdmin = isAdmin;
     }   
+
+    public int getUid() {
+        return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
+    }
+    
+    
 }
