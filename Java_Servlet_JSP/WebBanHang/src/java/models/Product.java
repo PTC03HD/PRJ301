@@ -115,4 +115,9 @@ public class Product {
         NumberFormat format = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
         return format.format(price);
     }
+    
+    public String convertPrice(int price1){
+        NumberFormat format = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+        return format.format(price1);
+    }
 }

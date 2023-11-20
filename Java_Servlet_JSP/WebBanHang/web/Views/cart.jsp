@@ -43,7 +43,7 @@
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav me-auto">
                                 <li class="nav-item">
-                                    <!-- Link--><a class="nav-link" href="loadDB?page=index">Home</a>
+                                    <!-- Link--><a class="nav-link active" href="loadDB?page=index">Home</a>
                                 </li>
                                 <li class="nav-item">
                                     <!-- Link--><a class="nav-link" href="paging?page=shop&index=1">Shop</a>
@@ -53,14 +53,14 @@
                                     <div class="dropdown-menu mt-3 shadow-sm" aria-labelledby="pagesDropdown">
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=index">Homepage</a>
                                         <a class="dropdown-item border-0 transition-link" href="paging?page=shop&index=1">Category</a>
-                                        <a class="dropdown-item border-0 transition-link" href="loadDB?page=cart">Shopping cart</a>
+                                        <a class="dropdown-item border-0 transition-link" href="cart">Shopping cart</a>
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=checkout">Checkout</a>
                                     </div>
                                 </li>
                             </ul>
                             <ul class="navbar-nav ms-auto">               
                                 <li class="nav-item">
-                                    <a class="nav-link active" href="loadDB?page=cart"> 
+                                    <a class="nav-link active" href="cart"> 
                                         <i class="fas fa-dolly-flatbed me-1 text-gray"></i>Cart
                                         <small class="text-gray fw-normal">(2)</small></a>
                                 </li>
@@ -71,7 +71,7 @@
                                         <a class="dropdown-item border-0 transition-link" href="logout?action=logout">Logout</a>
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=myAccount">Account detail</a>
                                         <c:if test="${sessionScope.acc!=null&&sessionScope.acc.getIsAdmin()}">
-                                        <a class="dropdown-item border-0 transition-link" href="paging?page=dashboard&index=1">Dashboard</a>
+                                            <a class="dropdown-item border-0 transition-link" href="paging?page=dashboard&index=1">Dashboard</a>
                                         </c:if>
                                     </div>
                             </ul>
@@ -155,30 +155,33 @@
                                     </thead>
                                     <tbody class="border-0">
                                         <!--san pham-->
-                                        <tr>
-                                            <th class="ps-0 py-3 border-light" scope="row">
-                                                <div class="d-flex align-items-center"><a class="reset-anchor d-block animsition-link" href="loadDB?page=detail"><img src="img/product-detail-3.jpg" alt="..." width="70"/></a>
-                                                    <div class="ms-3"><strong class="h6"><a class="reset-anchor animsition-link" href="loadDB?page=detail">Red digital smartwatch</a></strong></div>
-                                                </div>
-                                            </th>
-                                            <td class="p-3 align-middle border-light">
-                                                <p class="mb-0 small">$250</p>
-                                            </td>
-                                            <td class="p-3 align-middle border-light">
-                                                <div class="border d-flex align-items-center justify-content-between px-3"><span class="small text-uppercase text-gray headings-font-family">Quantity</span>
-                                                    <div class="quantity">
-                                                        <button class="dec-btn p-0"><i class="fas fa-caret-left"></i></button>
-                                                        <input class="form-control form-control-sm border-0 shadow-0 p-0" type="text" value="1"/>
-                                                        <button class="inc-btn p-0"><i class="fas fa-caret-right"></i></button>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="p-3 align-middle border-light">
-                                                <p class="mb-0 small">$250</p>
-                                            </td>
-                                            <td class="p-3 align-middle border-light"><a class="reset-anchor" href="#!"><i class="fas fa-trash-alt small text-muted"></i></a></td>
-                                        </tr>
-                                        
+                                        <c:forEach items="${dao.bill_detail}" var="bd">
+                                            <c:if test="${bd.bill_id.equals(fbill_id)}">
+                                                <tr>
+                                                    <th class="ps-0 py-3 border-light" scope="row">
+                                                        <div class="d-flex align-items-center"><a class="reset-anchor d-block animsition-link" href="loadDB?page=detail"><img src="${bd.product.img}" alt="..." width="70"/></a>
+                                                            <div class="ms-3"><strong class="h6"><a class="reset-anchor animsition-link" href="loadDB?page=detail">${bd.product.name}</a></strong></div>
+                                                        </div>
+                                                    </th>
+                                                    <td class="p-3 align-middle border-light">
+                                                        <p class="mb-0 small">${bd.product.convertPrice()}</p>
+                                                    </td>
+                                                    <td class="p-3 align-middle border-light">
+                                                        <div class="border d-flex align-items-center justify-content-between px-3"><span class="small text-uppercase text-gray headings-font-family">Quantity</span>
+                                                            <div class="quantity">
+                                                                <button class="dec-btn p-0"><i class="fas fa-caret-left"></i></button>
+                                                                <input class="form-control form-control-sm border-0 shadow-0 p-0" type="text" value="${bd.quantity}"/>
+                                                                <button class="inc-btn p-0"><i class="fas fa-caret-right"></i></button>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="p-3 align-middle border-light">
+                                                        <p class="mb-0 small">${bd.product.convertPrice(bd.product.price * bd.quantity)}</p>
+                                                    </td>
+                                                    <td class="p-3 align-middle border-light"><a class="reset-anchor" href="cart?pid=${bd.product.id}&action=del"><i class="fas fa-trash-alt small text-muted"></i></a></td>
+                                                </tr>
+                                            </c:if>
+                                        </c:forEach>
                                     </tbody>
                                 </table>
                             </div>
@@ -290,6 +293,7 @@
                 injectSvgSprite('https://bootstraptemple.com/files/icons/orion-svg-sprite.svg');
 
             </script>
+
             <!-- FontAwesome CSS - loading as last, so it doesn't block rendering-->
             <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
         </div>

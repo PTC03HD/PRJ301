@@ -42,24 +42,24 @@
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav me-auto">
                                 <li class="nav-item">
-                                    <!-- Link--><a class="nav-link" href="loadDB?page=index">Home</a>
+                                    <!-- Link--><a class="nav-link active" href="loadDB?page=index">Home</a>
                                 </li>
                                 <li class="nav-item">
                                     <!-- Link--><a class="nav-link" href="paging?page=shop&index=1">Shop</a>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle active" id="pagesDropdown" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
+                                    <a class="nav-link dropdown-toggle" id="pagesDropdown" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
                                     <div class="dropdown-menu mt-3 shadow-sm" aria-labelledby="pagesDropdown">
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=index">Homepage</a>
                                         <a class="dropdown-item border-0 transition-link" href="paging?page=shop&index=1">Category</a>
-                                        <a class="dropdown-item border-0 transition-link" href="loadDB?page=cart">Shopping cart</a>
+                                        <a class="dropdown-item border-0 transition-link" href="cart">Shopping cart</a>
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=checkout">Checkout</a>
                                     </div>
                                 </li>
                             </ul>
                             <ul class="navbar-nav ms-auto">               
                                 <li class="nav-item">
-                                    <a class="nav-link" href="loadDB?page=cart"> 
+                                    <a class="nav-link" href="cart"> 
                                         <i class="fas fa-dolly-flatbed me-1 text-gray"></i>Cart
                                         <small class="text-gray fw-normal">(2)</small></a>
                                 </li>
@@ -70,7 +70,7 @@
                                         <a class="dropdown-item border-0 transition-link" href="logout?action=logout">Logout</a>
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=myAccount">Account detail</a>
                                         <c:if test="${sessionScope.acc!=null&&sessionScope.acc.getIsAdmin()}">
-                                        <a class="dropdown-item border-0 transition-link" href="paging?page=dashboard&index=1">Dashboard</a>
+                                            <a class="dropdown-item border-0 transition-link" href="paging?page=dashboard&index=1">Dashboard</a>
                                         </c:if>
                                     </div>
                             </ul>

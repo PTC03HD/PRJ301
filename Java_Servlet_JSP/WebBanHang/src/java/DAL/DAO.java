@@ -19,7 +19,7 @@ public class DAO {
     private List<Users> u;
     private List<Product> pagingPro;
     private List<Bill> bill;
-    private HashMap<String, BillDetail> bill_detail;
+    private List<BillDetail> bill_detail;
 
     public DAO() {
         try {
@@ -72,12 +72,30 @@ public class DAO {
     public List<Product> getPagingPro() {
         return pagingPro;
     }
-
     public void setPagingPro(List<Product> pagingPro) {
         this.pagingPro = pagingPro;
     }
 
+    public List<Bill> getBill() {
+        return bill;
+    }
+
+    public void setBill(List<Bill> bill) {
+        this.bill = bill;
+    }
+
+    public List<BillDetail> getBill_detail() {
+        return bill_detail;
+    }
+
+    public void setBill_detail(List<BillDetail> bill_detail) {
+        this.bill_detail = bill_detail;
+    }
+    
+    
+
     public void loadDB() {
+        //product
         String sql = "select * from Product_HE172007";
         p = new Vector<>();
         try {
@@ -98,7 +116,7 @@ public class DAO {
         } catch (Exception e) {
             status = "Error at load Product: " + e.getMessage();
         }
-
+        //category
         sql = "select * from category_HE172007";
         c = new Vector<>();
         try {
@@ -110,7 +128,7 @@ public class DAO {
         } catch (Exception e) {
             status = "Error at load Category: " + e.getMessage();
         }
-
+        //user
         sql = "select * from users_HE172007";
         u = new Vector<>();
         try {
@@ -125,7 +143,7 @@ public class DAO {
         } catch (Exception e) {
             status = "Error at load Category: " + e.getMessage();
         }
-        
+        //bill
         sql = "select * from bill_HE172007";
         bill = new Vector<>();
         try {
@@ -138,14 +156,14 @@ public class DAO {
         } catch (Exception e) {
             status = "Error at load bill: "+e.getMessage();
         }
-        
+        //bill_detail
         sql = "select * from bill_detail_HE172007";
-        bill_detail = new HashMap<>();
+        bill_detail = new Vector<>();
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                bill_detail.put(rs.getString(2), new BillDetail(rs.getString(2), rs.getString(2),
+                bill_detail.add(new BillDetail(rs.getString(1), rs.getString(2),
                         findProduct(rs.getString(3)), rs.getInt(4), rs.getInt(5)));
             }
         } catch (Exception e) {
@@ -324,11 +342,6 @@ public class DAO {
         return format.format(money);
     }
 
-    public static void main(String[] args) {
-        DAO d = new DAO();
-        d.loadDB();
-    }
-
     public String getMaxPrice() {
         String sql = "select MAX(product_price) from product_HE172007";
         try {
@@ -375,5 +388,62 @@ public class DAO {
             }
         }
         return null;
+    }   
+    
+    public void InsertBillDetail(String bill_id, String product_id, String quantity, String price){
+        String sql = "INSERT INTO [bill_detail_HE172007] ([bill_id],[product_id],"
+                + "[quantity],[price])VALUES(?,?,?,?)";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, bill_id);
+            ps.setString(2, product_id);
+            ps.setString(3, quantity);
+            ps.setString(4, price);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            status = "Error at Insert Bill_Detail: "+e.getMessage();
+        }
     }
+    
+    public void DeleteBillDetail(String detail_id){
+        String sql = "DELETE FROM [bill_detail_HE172007] WHERE detail_id = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, detail_id);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            status = "Error at Delete BillDetail: "+e.getMessage();
+        }
+    }
+    
+    public void UpdateBillDetail(String detail_id, String quantity){
+        String sql = "UPDATE [dbo].[bill_detail_HE172007] SET [quantity] = ? WHERE detail_id = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, quantity);
+            ps.setString(2, detail_id);
+            ps.executeQuery();
+        } catch (Exception e) {
+            status = "Error at Update BillDetail: "+e.getMessage();
+        }
+    }
+    
+    public BillDetail findProductInCart(String pid, String billId){
+        for (BillDetail bd : bill_detail) {
+            if(bd.getProduct().getId().equals(pid) && billId.equals(bd.getBill_id())){
+                return bd;
+            }
+        }
+        return null;
+    }
+    
+    public static void main(String[] args) {
+        DAO d = new DAO();
+        d.loadDB();
+        for (BillDetail bd : d.bill_detail) {
+            System.out.println(bd.getDetail_id());
+        }
+    }
+    
+    
 }

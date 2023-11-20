@@ -54,14 +54,14 @@
                                     <div class="dropdown-menu mt-3 shadow-sm" aria-labelledby="pagesDropdown">
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=index">Homepage</a>
                                         <a class="dropdown-item border-0 transition-link" href="paging?page=shop&index=1">Category</a>
-                                        <a class="dropdown-item border-0 transition-link" href="loadDB?page=cart">Shopping cart</a>
+                                        <a class="dropdown-item border-0 transition-link" href="cart">Shopping cart</a>
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=checkout">Checkout</a>
                                     </div>
                                 </li>
                             </ul>
                             <ul class="navbar-nav ms-auto">               
                                 <li class="nav-item">
-                                    <a class="nav-link" href="loadDB?page=cart"> 
+                                    <a class="nav-link" href="cart"> 
                                         <i class="fas fa-dolly-flatbed me-1 text-gray"></i>Cart
                                         <small class="text-gray fw-normal">(2)</small></a>
                                 </li>
@@ -72,7 +72,7 @@
                                         <a class="dropdown-item border-0 transition-link" href="logout?action=logout">Logout</a>
                                         <a class="dropdown-item border-0 transition-link" href="loadDB?page=myAccount">Account detail</a>
                                         <c:if test="${sessionScope.acc!=null&&sessionScope.acc.getIsAdmin()}">
-                                        <a class="dropdown-item border-0 transition-link" href="paging?page=dashboard&index=1">Dashboard</a>
+                                            <a class="dropdown-item border-0 transition-link" href="paging?page=dashboard&index=1">Dashboard</a>
                                         </c:if>
                                     </div>
                             </ul>
@@ -121,7 +121,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-3 pl-sm-0"><a class="btn btn-dark btn-sm btn-block h-100 d-flex align-items-center justify-content-center px-0" href="loadDB?page=cart">Add to cart</a></div>
+                                <div class="col-sm-3 pl-sm-0"><a class="btn btn-dark btn-sm btn-block h-100 d-flex align-items-center justify-content-center px-0" href="cart?pid=${product.id}">Add to cart</a></div>
                             </div><a class="text-dark p-0 mb-4 d-inline-block" href="#!"><i class="far fa-heart me-2"></i>Add to wish list</a><br>
                             <ul class="list-unstyled small d-inline-block">
                                 <li class="px-3 py-2 mb-1 bg-white"><strong class="text-uppercase">SKU:</strong><span class="ms-2 text-muted">${product.id}</span></li>
@@ -196,7 +196,7 @@
                                 <c:set value="${count+1}" var="count"></c:set>
                                     <div class="col-lg-3 col-sm-6">
                                         <div class="product text-center skel-loader">
-                                            <div class="d-block mb-3 position-relative"><a class="d-block" href="loadDB?page=detail&pid=${pro.id}"><img class="img-fluid w-100" src="${pro.img}" alt="..."></a>
+                                            <div class="d-block mb-3 position-relative"><a class="d-block" href="loadDB?page=detail&pid=${pro.id}"><img class="img-fluid w-100" src="${pro.img}" alt="..."></a></div>
                                             <div class="product-overlay">
                                                 <ul class="mb-0 list-inline">
                                                     <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-dark" href="loadDB?page=cart">Add to cart</a></li>
